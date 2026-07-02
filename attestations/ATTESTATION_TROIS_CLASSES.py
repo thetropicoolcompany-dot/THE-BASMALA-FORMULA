@@ -5,7 +5,12 @@ Recompte tout depuis le rasm et les FP ; vérifie les corrections dans les livra
 """
 import sys, os, re, csv, unicodedata
 
-FP = sys.argv[1] if len(sys.argv) > 1 else '/mnt/project'
+import os as _os
+def _resolve_fp():
+    for c in (_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'data'), '/mnt/project'):
+        if _os.path.exists(_os.path.join(c, 'LE_CORAN.txt')): return _os.path.normpath(c)
+    raise FileNotFoundError('data/ introuvable')
+FP = sys.argv[1] if len(sys.argv) > 1 else _resolve_fp()
 PQ = sys.argv[2] if len(sys.argv) > 2 else '/home/claude'
 n, ecarts = 0, 0
 
@@ -75,8 +80,8 @@ att("J(سورة) + J(زبد) = 284 = J(الرحمة) (l'enclos + l'écume = le d
 
 print("== 4 · LES LIVRABLES CORRIGÉS ET GRAVÉS ==")
 def lit(f):
-    _ed = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'editions')
-    for base in (_ed, PQ, '/mnt/user-data/outputs', FP):
+    _r = os.path.dirname(os.path.abspath(__file__))
+    for base in (os.path.join(_r, '..', 'editions'), os.path.join(_r, '..', 'doctrine'), PQ, '/mnt/user-data/outputs', FP):
         p = os.path.join(base, f)
         if os.path.exists(p): return open(p, encoding='utf-8').read()
     return None

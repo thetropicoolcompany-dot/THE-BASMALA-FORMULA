@@ -11,7 +11,12 @@ Usage : python3 ATTESTATION_AUDIT_ROLES.py [dossier_FP]   (defaut : /mnt/project
 import csv, re, sys, unicodedata
 from collections import Counter
 
-FP = sys.argv[1] if len(sys.argv) > 1 else '/mnt/project'
+import os as _os
+def _resolve_fp():
+    for c in (_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), '..', 'data'), '/mnt/project'):
+        if _os.path.exists(_os.path.join(c, 'LE_CORAN.txt')): return _os.path.normpath(c)
+    raise FileNotFoundError('data/ introuvable')
+FP = sys.argv[1] if len(sys.argv) > 1 else _resolve_fp()
 N = 0
 def A(cond, label):
     global N
