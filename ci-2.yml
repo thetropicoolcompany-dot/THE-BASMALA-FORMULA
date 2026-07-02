@@ -1,0 +1,42 @@
+name: audit-and-deploy
+# Le registre qui s'audite lui-même : le site ne se déploie que si 0 écart.
+on:
+  push: { branches: [main] }
+  workflow_dispatch:
+permissions: { contents: read, pages: write, id-token: write }
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Intégrité des sources (SHA256)
+        run: cd data && sha256sum -c SHA256SUMS
+      - name: Beancount (l'outil de la MAISON)
+        run: pip install beancount==3.2.3
+      - name: Générer le Grand Livre (jamais saisi — la machine poste, l'audit solde)
+        run: python3 engine/build_ledger.py
+      - name: bean-check (l'opinion 0/154)
+        run: bean-check ledger/GRAND_LIVRE.beancount
+      - name: Les attestations (échec si un seul écart)
+        run: |
+          set -e
+          for a in attestations/ATTESTATION_*.py; do
+            echo "== $a =="
+            out=$(python3 "$a"); echo "$out"
+            echo "$out" | tail -1 | grep -Eq "0 ÉCART" || exit 1
+          done
+      - name: Build du site (JSON régénérés par le moteur)
+        run: python3 build/build_site.py
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: web }
+  deploy:
+    needs: audit
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.d.outputs.page_url }}
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4
