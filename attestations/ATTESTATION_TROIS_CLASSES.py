@@ -75,7 +75,8 @@ att("J(سورة) + J(زبد) = 284 = J(الرحمة) (l'enclos + l'écume = le d
 
 print("== 4 · LES LIVRABLES CORRIGÉS ET GRAVÉS ==")
 def lit(f):
-    for base in (PQ, '/mnt/user-data/outputs', FP):
+    _ed = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'editions')
+    for base in (_ed, PQ, '/mnt/user-data/outputs', FP):
         p = os.path.join(base, f)
         if os.path.exists(p): return open(p, encoding='utf-8').read()
     return None
