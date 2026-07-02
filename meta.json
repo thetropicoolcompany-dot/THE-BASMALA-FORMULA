@@ -1,0 +1,26 @@
+{
+ "titre": "The Basmala Formula — Ḥisāb al-Qurʾān",
+ "grandeurs": {
+  "versets": 6236,
+  "phrases": 10642,
+  "mots": 78248,
+  "lettres": 332837,
+  "jummal": 23476120
+ },
+ "N_clic": 46953890,
+ "tau": {
+  "moyenne": 0.6520719513377912,
+  "354": 0.651396508361714,
+  "355": 0.6532366114926793
+ },
+ "annees_jours": {
+  "moyenne": 354.367068,
+  "354": 354.0,
+  "355": 355.0
+ },
+ "lunaison": 29.530589,
+ "ancres": {
+  "1447": "2026-03-13"
+ },
+ "basmala": 786
+}

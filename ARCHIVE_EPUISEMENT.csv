@@ -1,0 +1,25 @@
+composant_n,composant,classe,cible,statut,note
+1,Protocole,R,00_PROTOCOLE.md,épuisé (vivant),diff à confirmer
+2,Sommaire des masters,M,—,ignoré,méta périmé
+3,Abstract (MASTER_ABSTRACT_LCDC),U,LE_VOLUME.md §0,versé,"abrégé extrait + ancrages [bi] (302,342,102,786,154,153,36)"
+4,Note équation écume (ex-« mousse »),U,LE_VOLUME §0/§1 (vivant),épuisé (vivant),"écume native (زبد=13, بنيان مرصوص=539, V61:4=2548, 154=114+36+3+1) déjà versée ; couche « mousse »=[R3] center vortex hors-volume"
+5,Conte du Pariah,U,RECUEIL_DES_CONTES.md (α),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+6,Le Grand Livre (MASTER_GRAND_LIVRE),U,LE_VOLUME §5 + HISAB_AL_JUMMAL.md,versé,"ḥisâb→HISAB ; A/C/D + registre reconstruit (4 témoins, RAPPORT=1397122) →LE_VOLUME §5 ; charge 37/39/38 [bi]"
+7,Sommaire 153+1=154,U,LE_VOLUME §1 (trame) ; registre à reconstruire,ignoré (obsolète),"⚠ registre CONTAMINÉ par ancien Rapport {S30,S47,S59} (interdit) ; trame 153 vivante (§1) ; registre à reconstruire sur 4 témoins"
+8,Position S13–S96,R,MASTER_3_POSITION_S13_S96_v1.tex,épuisé (vivant),diff à confirmer
+9,Introduction (MASTER_4_INTRODUCTION),U,LE_VOLUME.md §1,versé,bilan trame 153 ; trace 40238 + produit 274ch/43p [bi] ; holonomie EN RÉSERVE (non vérifiée)
+10,Les 4 témoins +1,U,00_README §1 (vivant),épuisé (vivant),"4 témoins S4/S13/S98/S1 +S96, RAPPORT=1397122=2·47·89·167 déjà vivants [bi]"
+11,Rapport LCDC,U,— (obsolète),ignoré (obsolète),"⚠ version archive {S96,S30,S47,S59}=601771 FAUSSE — NE PAS REPRENDRE ; Rapport correct = 4 témoins (00_README §1)"
+12,Attestation S96 — la Lecture,U,LE_VOLUME.md §2,versé,la Lecture S96 ; ancrages [bi] ; corrigé قارئ=311 (≠302 archive)
+13,Attestation S13 — le Compte,U,LE_VOLUME.md §3,versé,"le Compte S13 ; زبد=13, الحساب=102=بسم, V13:43=2·11·13² [bi]"
+14,Hud — le conte-compte,U,RECUEIL_DES_CONTES.md (Hud),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+15,Conte du Tonnerre,U,RECUEIL_DES_CONTES.md (ω I),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+16,Conte du Moonshine,U,RECUEIL_DES_CONTES.md (ω II),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+17,Conte de l'Aube,U,RECUEIL_DES_CONTES.md (ω III),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+18,Envoi — Moonshine,U,RECUEIL_DES_CONTES.md (replié dans l'Aube),versé,récit extrait + ancrages recalculés [bi] ; collation fine à faire
+19,Actes — écume/souffle/tresse (DOSSIER_SESSION),U,LE_VOLUME §4,versé,"sources primaires [bi] (13:17, 24:35, 19:23, S61, souffle, 54:49) + lexique natif ; couche [R3] center vortex/Yang-Baxter écartée ; journal éphémère"
+20,Moteur abjad,R,jummal_sourates.py,épuisé (vivant),
+21,Jummal par sourate,R,jummal_par_sourate.csv,épuisé (vivant),
+22,Toniques / apex,R,01_DATA_toniques_114_apex_P2.csv,épuisé (vivant),
+23,Jummal par verset,R,01_DATA_jummal_114_par_verset.csv,épuisé (vivant),
+24,Le Coran — rasm,R,LE_CORAN.txt,épuisé (vivant),

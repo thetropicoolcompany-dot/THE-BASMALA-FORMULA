@@ -1,0 +1,98 @@
+\documentclass[border=6pt]{standalone}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\setmainfont{TeX Gyre Pagella}
+\newfontfamily\arab[Script=Arabic,Scale=1.16]{Amiri Quran}
+\newcommand{\Sx}[1]{\ensuremath{\mathrm{S}_{#1}}}
+\protected\def\ar#1{\ifmmode\mbox{\normalfont\arab #1}\else{\normalfont\arab #1}\fi}
+\definecolor{ink}{rgb}{0.17,0.14,0.10}
+\definecolor{gold}{rgb}{0.61,0.48,0.13}
+\definecolor{paper}{rgb}{0.995,0.992,0.982}
+\definecolor{goldlite}{rgb}{0.93,0.90,0.78}
+\definecolor{credit}{rgb}{0.11,0.40,0.22}
+\definecolor{debit}{rgb}{0.55,0.12,0.12}
+\begin{document}
+\begin{tikzpicture}[font=\scriptsize]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PANNEAU A : le globe-sourate
+\begin{scope}[xshift=0cm]
+% ombre portee
+\fill[black!10] (0.12,-2.72) ellipse (2.35 and 0.30);
+% boule pleine (surface externe, dehors = zahir)
+\shade[shading=radial,inner color=paper,outer color=goldlite!75!black!30] (0,0) circle (2.6);
+\fill[white,opacity=0.45] (-0.85,1.15) ellipse (0.95 and 0.62); % lumiere
+% secteur decoupe (bas-droite) : les couches concentriques (portes emboitees)
+\begin{scope}
+  \fill[goldlite!45] (0,0) -- (-18:2.6)  arc (-18:-108:2.6)  -- cycle; % V1+V7 = 6796
+  \fill[black!8]     (0,0) -- (-18:1.95) arc (-18:-108:1.95) -- cycle; % V2+V6 = 1655
+  \fill[debit!11]    (0,0) -- (-18:1.30) arc (-18:-108:1.30) -- cycle; % V3+V5 = 1454
+  \fill[debit!22]    (0,0) -- (-18:0.65) arc (-18:-108:0.65) -- cycle; % V4 = 242
+  \fill[black,opacity=0.05] (0,0) -- (-18:2.6) arc (-18:-108:2.6) -- cycle; % profondeur
+  \draw[ink!55,line width=0.5pt] (0,0) -- (-18:2.6);
+  \draw[ink!55,line width=0.5pt] (0,0) -- (-108:2.6);
+  \foreach \r in {0.65,1.30,1.95} \draw[ink!30,line width=0.35pt] (-18:\r) arc (-18:-108:\r);
+\end{scope}
+% enclos dore
+\draw[gold,line width=1.5pt] (0,0) circle (2.6);
+% la porte (bab) sur le limbe, angle 32
+\begin{scope}[rotate=32]
+  \fill[goldlite!85] (2.28,-0.34) rectangle (2.6,0.34);
+  \draw[gold,line width=1.2pt] (2.6,-0.34) -- (2.28,-0.34) -- (2.28,0.34) -- (2.6,0.34);
+  \draw[gold,line width=1.5pt] (2.60,-0.34) -- ++(0.42,0.22); % battant entrouvert
+\end{scope}
+\foreach \a in {22,32,42} \draw[gold!75,line width=0.45pt] (\a:2.72) -- (\a:2.98); % halo
+% etiquettes panneau A
+\node[ink!75] at (0.95,1.45) {\ar{ظاهر} \,\emph{(dehors)}};
+\node[ink!85] at (-95:1.72) {\ar{باطن} \,\emph{(dedans)}};
+\node[gold!62!ink,font=\tiny,anchor=east,align=right] at (-2.95,0.55) {\ar{سورة} $=271=$ \ar{المر}\\ l'enclos};
+\draw[gold!60,line width=0.45pt] (-2.9,0.48) -- (169:2.64);
+% masses des couches
+\node[ink!80,font=\tiny] at (-63:2.28) {6796};
+\node[ink!80,font=\tiny] at (-63:1.63) {1655};
+\node[ink!80,font=\tiny] at (-63:0.98) {1454};
+\node[debit!80!ink,font=\tiny] at (-63:0.36) {242};
+% porte + cle
+\node[gold!80!ink,align=left,font=\tiny,anchor=west] at (3.05,1.75) {\ar{باب} $=5$ (57:13)\\ la porte};
+\draw[-Stealth,gold!80!ink,line width=0.5pt] (3.0,1.72) -- (32:2.75);
+\node[ink!75,align=left,font=\tiny,anchor=west] at (3.05,0.9) {la cl\'e : $\varphi_1=786$\\ tourn\'ee par \ar{باسم} $=103$};
+\draw[-Stealth,ink!55,line width=0.5pt] (3.0,1.02) to[bend right=10] (30:2.68);
+\node[ink,font=\footnotesize\bfseries] at (0.2,-3.35) {le globe-sourate \Sx{1} — la coupe};
+\end{scope}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PANNEAU B : l'ecume du volume
+\begin{scope}[xshift=9.6cm]
+\fill[black!10] (0.10,-2.62) ellipse (2.45 and 0.28);
+\begin{scope}
+\clip (0,0) circle (2.45);
+\tikzset{cellule/.style={draw=ink!40,line width=0.55pt,rounded corners=2.5pt,fill=paper}}
+\path[cellule,fill=goldlite!55] (-0.73,-0.01) -- (-0.15,-0.75) -- (0.54,-0.32) -- (0.47,0.40) -- (-0.15,0.64) -- cycle;
+\path[cellule,fill=black!5] (1.48,-0.77) -- (1.82,-0.78) -- (1.29,0.80) -- (1.02,0.81) -- (0.47,0.40) -- (0.54,-0.32) -- cycle;
+\path[cellule,fill=credit!7] (0.59,1.55) -- (1.02,0.81) -- (0.47,0.40) -- (-0.15,0.64) -- (-0.40,1.34) -- (-0.38,1.39) -- cycle;
+\path[cellule,fill=debit!7] (-2.03,0.85) -- (-0.40,1.34) -- (-0.15,0.64) -- (-0.73,-0.01) -- (-1.29,0.02) -- cycle;
+\path[cellule,fill=black!7] (-1.29,0.02) -- (-0.73,-0.01) -- (-0.15,-0.75) -- (-0.22,-1.07) -- (-0.85,-1.35) -- (-1.47,-0.70) -- cycle;
+\path[cellule,fill=credit!6] (-0.22,-1.07) -- (0.30,-1.63) -- (1.48,-0.77) -- (0.54,-0.32) -- (-0.15,-0.75) -- cycle;
+\path[cellule,fill=debit!6] (2.31,1.46) -- (2.30,1.46) -- (1.29,0.80) -- (1.82,-0.78) -- (2.83,-1.25) -- (2.85,-1.25) -- cycle;
+\path[cellule,fill=black!5] (1.00,2.44) -- (2.30,1.46) -- (1.29,0.80) -- (1.02,0.81) -- (0.59,1.55) -- cycle;
+\path[cellule,fill=credit!5] (0.99,2.46) -- (-0.61,2.63) -- (-0.38,1.39) -- (0.59,1.55) -- (1.00,2.44) -- cycle;
+\path[cellule,fill=debit!5] (-2.58,1.08) -- (-2.42,1.46) -- (-0.63,2.64) -- (-0.61,2.63) -- (-0.38,1.39) -- (-0.40,1.34) -- (-2.03,0.85) -- cycle;
+\path[cellule,fill=black!6] (-2.79,0.99) -- (-2.38,-1.14) -- (-2.37,-1.14) -- (-1.47,-0.70) -- (-1.29,0.02) -- (-2.03,0.85) -- (-2.58,1.08) -- cycle;
+\path[cellule,fill=credit!6] (-2.37,-1.14) -- (-1.35,-2.36) -- (-1.31,-2.34) -- (-0.85,-1.35) -- (-1.47,-0.70) -- cycle;
+\path[cellule,fill=debit!6] (-0.85,-1.35) -- (-0.22,-1.07) -- (0.30,-1.63) -- (0.49,-2.70) -- (-1.31,-2.34) -- cycle;
+\path[cellule,fill=black!5] (0.30,-1.63) -- (0.49,-2.70) -- (2.83,-1.25) -- (1.82,-0.78) -- (1.48,-0.77) -- cycle;
+% highlights 3D
+\foreach \x/\y in {-0.06/-0.01,1.06/0.10,0.35/1.05,-0.81/0.65,-0.89/-0.66,0.55/-0.99,1.60/0.30,1.14/1.51,0.20/1.94,-1.12/1.69,-1.85/-0.30,-1.45/-1.25,-0.36/-1.75,0.95/-1.50}
+  \fill[white,opacity=0.26] (\x-0.12,\y+0.14) ellipse (0.18 and 0.09);
+\end{scope}
+\draw[ink!45,line width=0.8pt] (0,0) circle (2.45);
+% S1 doree = la cellule centrale
+\node[gold!80!ink,font=\bfseries\scriptsize] at (-0.06,-0.01) {$\mathrm{S}_1$};
+% etiquettes panneau B
+\node[ink!75,font=\tiny,align=left,anchor=west] at (2.65,1.5) {parois \textbf{partag\'ees} —\\ jamais d\'etach\'ees (\ar{جفاء})};
+\draw[-Stealth,ink!55,line width=0.5pt] (2.62,1.45) -- (1.45,0.55);
+\node[ink!75,font=\tiny,align=left,anchor=west] at (2.62,0.45) {\ar{بنيان مرصوص}\\ $=539=7^2{\cdot}11$};
+\node[ink,font=\footnotesize\bfseries,align=center] at (0.1,-3.35) {le volume — « une \'ecume de \textbf{114} cellules soud\'ees »\\[-1pt] {\normalfont\tiny (\texttt{LE\_VOLUME}) — nou\'ee de 36 connexions ; \Sx{1} en est une}};
+\end{scope}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% separation des echelles
+\draw[ink!30,dashed] (5.15,-2.6) -- (5.15,2.9);
+\node[ink!60,font=\tiny] at (4.85,-3.90) {— deux \'echelles, qui ne se m\'elangent pas (loi, r\`egle 6) —};
+\end{tikzpicture}
+\end{document}

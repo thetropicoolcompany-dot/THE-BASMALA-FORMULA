@@ -1,0 +1,772 @@
+% =====================================================================
+% FEUILLE D'AUDIT — S1 — v1 : la chaine des offices (raconte -> audite -> lu -> compte)
+% v3 — XeLaTeX — PORTRAIT. Les comptes du Coran / Hisab al-Quran.
+% v3 = v2 remis en page « revue mathématique » : identités hors-texte
+% (align/gather/array), tableaux alignés, prose réduite aux liaisons.
+% Conforme au 00_PROTOCOLE.md et à PROTOCOLE_GENERAL_AUDIT.md (v20).
+% Tous les nombres RECOMPTÉS sur les FP (arithmétique entière exacte) — [bi]
+% (script de session : 98 assertions, 0 écart).
+% Nouveau en v2 : en-tête enrichi (fatiha=494, apex V4, calendrier, point
+% fixe 7=7) ; conservations triples & les deux grains ; section 4 TOPOLOGIE
+% (l'étude « le globe qui s'ouvre » + FIG.1 conte, FIG.2 compte, FIG.3
+% combinaison) ; annexe : le strip des 19 lettres ; gabarit 0..7 complet.
+% Compile : xelatex ×2 (police Amiri Quran requise).
+% =====================================================================
+\documentclass[10pt]{article}
+\usepackage[a4paper,portrait,top=1.5cm,bottom=1.6cm,left=1.7cm,right=1.7cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath,amssymb}
+\usepackage[table]{xcolor}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{pifont}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+\definecolor{ink}{rgb}{0.17,0.14,0.10}
+\definecolor{gold}{rgb}{0.61,0.48,0.13}
+\definecolor{paper}{rgb}{0.995,0.992,0.982}
+\definecolor{goldlite}{rgb}{0.93,0.90,0.78}
+\definecolor{credit}{rgb}{0.11,0.40,0.22}
+\definecolor{debit}{rgb}{0.55,0.12,0.12}
+\definecolor{neutralc}{rgb}{0.20,0.20,0.24}
+\definecolor{shadow}{rgb}{0.46,0.45,0.43}
+\color{ink}
+
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+\newfontfamily\arab[Script=Arabic,Scale=1.16]{Amiri Quran}
+\newfontfamily\arabbig[Script=Arabic,Scale=2.5]{Amiri Quran}
+
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\pgcd}{pgcd}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.42em}
+\linespread{1.05}
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{gold!55}\leaders\hrule height\footrulewidth\hfill}}
+\fancyfoot[L]{\footnotesize\color{gold!75!ink}\textsc{Les comptes du Coran}\,\textperiodcentered\,\emph{\d{H}is\=ab al-Qur'\=an}\,\textperiodcentered\, \Sx{1} l'Ouvrante \,\textperiodcentered\, le quitus}
+\fancyfoot[R]{\footnotesize\color{gold!75!ink}\Sx{1} al-F\=ati\d{h}a \,\textperiodcentered\,\thepage}
+
+\newcommand{\Sx}[1]{\ensuremath{\mathrm{S}_{#1}}}
+\newcommand{\Vx}[1]{\ensuremath{\mathrm{V}_{#1}}}
+\protected\def\ar#1{\ifmmode\mbox{\normalfont\arab #1}\else{\normalfont\arab #1}\fi}
+\newcommand{\bi}{{\ttfamily\footnotesize\color{credit!75!ink}[bi]}}
+\newcommand{\rr}{{\ttfamily\footnotesize\color{shadow}[R3]}}
+\newcommand{\chc}{\textcolor{credit}{\ensuremath{+1}}}
+\newcommand{\chd}{\textcolor{debit}{\ensuremath{-1}}}
+\newcommand{\chn}{\textcolor{neutralc}{\ensuremath{0}}}
+\newcommand{\yes}{\textcolor{gold}{\ding{52}}~}
+
+\newtcolorbox{card}[1][]{enhanced,boxrule=0.4pt,colframe=gold!55,colback=paper,
+  arc=1.2mm,left=2.2mm,right=2.2mm,top=1.6mm,bottom=1.6mm,#1}
+\newtcolorbox{tcard}[1][]{enhanced,boxrule=0.4pt,colframe=gold!45,colback=goldlite!22,
+  arc=1.2mm,left=2.2mm,right=2.2mm,top=1.6mm,bottom=1.6mm,#1}
+\newcommand{\rubr}[1]{\medskip{\sffamily\bfseries\color{gold!70!ink}\large #1}\par\vspace{-0.2em}
+  {\color{gold!55}\rule{\linewidth}{0.4pt}}\par}
+\newcommand{\srub}[1]{\smallskip{\sffamily\bfseries\color{ink}#1}\par}
+
+\emergencystretch=1.5em
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{5pt}\setlength{\belowdisplayskip}{5pt}%
+  \setlength{\abovedisplayshortskip}{2pt}\setlength{\belowdisplayshortskip}{3pt}}
+\newcommand{\lect}[1]{{\footnotesize #1}\par}
+\newcommand{\chapo}[1]{{\small\itshape\leftskip=5mm\rightskip=5mm #1\par}\smallskip}
+\begin{document}
+
+% ================================================================= PAGE 1
+% ============================= FRONTISPICE (page dediee, v3.2) =============================
+\begin{center}
+{\sffamily\bfseries\Large\color{gold!70!ink} LES COMPTES DU CORAN}\\[0.15em]
+{\sffamily\color{gold!60!ink}\small feuille d'audit \textperiodcentered\ \emph{\d{H}is\=ab al-Qur'\=an}}\\[1.3em]
+% --- la calligraphie persane de la basmala (bismillah_.pdf, rognee)
+\includegraphics[width=11.2cm,trim=37 178 32 180,clip]{bismillah_.pdf}\\[1.1em]
+{\arabbig الفاتحة}\\[0.4em]
+{\sffamily\bfseries\Huge\color{ink} L'OUVRANTE}\\[0.25em]
+{\sffamily\large\color{ink} al-F\=ati\d{h}a \textperiodcentered\ \Sx{1} \textperiodcentered\ le t\'emoin N\textsuperscript{o}4, la Louange}\\[0.15em]
+{\sffamily\color{debit!80!ink}\textbf{et la th\'eorie de la basmala} \emph{(The Basmala Formula)}}
+\end{center}
+
+\vfill
+\begin{center}
+\scalebox{0.92}{%
+\begin{tikzpicture}[font=\scriptsize]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PANNEAU A : le globe-sourate
+\begin{scope}[xshift=0cm]
+% ombre portee
+\fill[black!10] (0.12,-2.72) ellipse (2.35 and 0.30);
+% boule pleine (surface externe, dehors = zahir)
+\shade[shading=radial,inner color=paper,outer color=goldlite!75!black!30] (0,0) circle (2.6);
+\fill[white,opacity=0.45] (-0.85,1.15) ellipse (0.95 and 0.62); % lumiere
+% secteur decoupe (bas-droite) : les couches concentriques (portes emboitees)
+\begin{scope}
+  \fill[goldlite!45] (0,0) -- (-18:2.6)  arc (-18:-108:2.6)  -- cycle; % V1+V7 = 6796
+  \fill[black!8]     (0,0) -- (-18:1.95) arc (-18:-108:1.95) -- cycle; % V2+V6 = 1655
+  \fill[debit!11]    (0,0) -- (-18:1.30) arc (-18:-108:1.30) -- cycle; % V3+V5 = 1454
+  \fill[debit!22]    (0,0) -- (-18:0.65) arc (-18:-108:0.65) -- cycle; % V4 = 242
+  \fill[black,opacity=0.05] (0,0) -- (-18:2.6) arc (-18:-108:2.6) -- cycle; % profondeur
+  \draw[ink!55,line width=0.5pt] (0,0) -- (-18:2.6);
+  \draw[ink!55,line width=0.5pt] (0,0) -- (-108:2.6);
+  \foreach \r in {0.65,1.30,1.95} \draw[ink!30,line width=0.35pt] (-18:\r) arc (-18:-108:\r);
+\end{scope}
+% enclos dore
+\draw[gold,line width=1.5pt] (0,0) circle (2.6);
+% la porte (bab) sur le limbe, angle 32
+\begin{scope}[rotate=32]
+  \fill[goldlite!85] (2.28,-0.34) rectangle (2.6,0.34);
+  \draw[gold,line width=1.2pt] (2.6,-0.34) -- (2.28,-0.34) -- (2.28,0.34) -- (2.6,0.34);
+  \draw[gold,line width=1.5pt] (2.60,-0.34) -- ++(0.42,0.22); % battant entrouvert
+\end{scope}
+\foreach \a in {22,32,42} \draw[gold!75,line width=0.45pt] (\a:2.72) -- (\a:2.98); % halo
+% etiquettes panneau A
+\node[ink!75] at (0.95,1.45) {\ar{ظاهر} \,\emph{(dehors)}};
+\node[ink!85] at (-95:1.72) {\ar{باطن} \,\emph{(dedans)}};
+\node[gold!62!ink,font=\tiny,anchor=east,align=right] at (-2.95,0.55) {\ar{سورة} $=271=$ \ar{المر}\\ l'enclos};
+\draw[gold!60,line width=0.45pt] (-2.9,0.48) -- (169:2.64);
+% masses des couches
+\node[ink!80,font=\tiny] at (-63:2.28) {6796};
+\node[ink!80,font=\tiny] at (-63:1.63) {1655};
+\node[ink!80,font=\tiny] at (-63:0.98) {1454};
+\node[debit!80!ink,font=\tiny] at (-63:0.36) {242};
+% porte + cle
+\node[gold!80!ink,align=left,font=\tiny,anchor=west] at (3.05,1.75) {\ar{باب} $=5$ (57:13)\\ la porte};
+\draw[-Stealth,gold!80!ink,line width=0.5pt] (3.0,1.72) -- (32:2.75);
+\node[ink!75,align=left,font=\tiny,anchor=west] at (3.05,0.9) {la cl\'e : $\varphi_1=786$\\ tourn\'ee par \ar{باسم} $=103$};
+\draw[-Stealth,ink!55,line width=0.5pt] (3.0,1.02) to[bend right=10] (30:2.68);
+\node[ink,font=\footnotesize\bfseries] at (0.2,-3.35) {le globe-sourate \Sx{1} — la coupe};
+\end{scope}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PANNEAU B : l'ecume du volume
+\begin{scope}[xshift=9.6cm]
+\fill[black!10] (0.10,-2.62) ellipse (2.45 and 0.28);
+\begin{scope}
+\clip (0,0) circle (2.45);
+\tikzset{cellule/.style={draw=ink!40,line width=0.55pt,rounded corners=2.5pt,fill=paper}}
+\path[cellule,fill=goldlite!55] (-0.73,-0.01) -- (-0.15,-0.75) -- (0.54,-0.32) -- (0.47,0.40) -- (-0.15,0.64) -- cycle;
+\path[cellule,fill=black!5] (1.48,-0.77) -- (1.82,-0.78) -- (1.29,0.80) -- (1.02,0.81) -- (0.47,0.40) -- (0.54,-0.32) -- cycle;
+\path[cellule,fill=credit!7] (0.59,1.55) -- (1.02,0.81) -- (0.47,0.40) -- (-0.15,0.64) -- (-0.40,1.34) -- (-0.38,1.39) -- cycle;
+\path[cellule,fill=debit!7] (-2.03,0.85) -- (-0.40,1.34) -- (-0.15,0.64) -- (-0.73,-0.01) -- (-1.29,0.02) -- cycle;
+\path[cellule,fill=black!7] (-1.29,0.02) -- (-0.73,-0.01) -- (-0.15,-0.75) -- (-0.22,-1.07) -- (-0.85,-1.35) -- (-1.47,-0.70) -- cycle;
+\path[cellule,fill=credit!6] (-0.22,-1.07) -- (0.30,-1.63) -- (1.48,-0.77) -- (0.54,-0.32) -- (-0.15,-0.75) -- cycle;
+\path[cellule,fill=debit!6] (2.31,1.46) -- (2.30,1.46) -- (1.29,0.80) -- (1.82,-0.78) -- (2.83,-1.25) -- (2.85,-1.25) -- cycle;
+\path[cellule,fill=black!5] (1.00,2.44) -- (2.30,1.46) -- (1.29,0.80) -- (1.02,0.81) -- (0.59,1.55) -- cycle;
+\path[cellule,fill=credit!5] (0.99,2.46) -- (-0.61,2.63) -- (-0.38,1.39) -- (0.59,1.55) -- (1.00,2.44) -- cycle;
+\path[cellule,fill=debit!5] (-2.58,1.08) -- (-2.42,1.46) -- (-0.63,2.64) -- (-0.61,2.63) -- (-0.38,1.39) -- (-0.40,1.34) -- (-2.03,0.85) -- cycle;
+\path[cellule,fill=black!6] (-2.79,0.99) -- (-2.38,-1.14) -- (-2.37,-1.14) -- (-1.47,-0.70) -- (-1.29,0.02) -- (-2.03,0.85) -- (-2.58,1.08) -- cycle;
+\path[cellule,fill=credit!6] (-2.37,-1.14) -- (-1.35,-2.36) -- (-1.31,-2.34) -- (-0.85,-1.35) -- (-1.47,-0.70) -- cycle;
+\path[cellule,fill=debit!6] (-0.85,-1.35) -- (-0.22,-1.07) -- (0.30,-1.63) -- (0.49,-2.70) -- (-1.31,-2.34) -- cycle;
+\path[cellule,fill=black!5] (0.30,-1.63) -- (0.49,-2.70) -- (2.83,-1.25) -- (1.82,-0.78) -- (1.48,-0.77) -- cycle;
+% highlights 3D
+\foreach \x/\y in {-0.06/-0.01,1.06/0.10,0.35/1.05,-0.81/0.65,-0.89/-0.66,0.55/-0.99,1.60/0.30,1.14/1.51,0.20/1.94,-1.12/1.69,-1.85/-0.30,-1.45/-1.25,-0.36/-1.75,0.95/-1.50}
+  \fill[white,opacity=0.26] (\x-0.12,\y+0.14) ellipse (0.18 and 0.09);
+\end{scope}
+\draw[ink!45,line width=0.8pt] (0,0) circle (2.45);
+% S1 doree = la cellule centrale
+\node[gold!80!ink,font=\bfseries\scriptsize] at (-0.06,-0.01) {$\mathrm{S}_1$};
+% etiquettes panneau B
+\node[ink!75,font=\tiny,align=left,anchor=west] at (2.65,1.5) {parois \textbf{partag\'ees} —\\ jamais d\'etach\'ees (\ar{جفاء})};
+\draw[-Stealth,ink!55,line width=0.5pt] (2.62,1.45) -- (1.45,0.55);
+\node[ink!75,font=\tiny,align=left,anchor=west] at (2.62,0.45) {\ar{بنيان مرصوص}\\ $=539=7^2{\cdot}11$};
+\node[ink,font=\footnotesize\bfseries,align=center] at (0.1,-3.35) {le volume — « une \'ecume de \textbf{114} cellules soud\'ees »\\[-1pt] {\normalfont\tiny (\texttt{LE\_VOLUME}) — nou\'ee de 36 connexions ; \Sx{1} en est une}};
+\end{scope}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% separation des echelles
+\draw[ink!30,dashed] (5.15,-2.6) -- (5.15,2.9);
+\node[ink!60,font=\tiny] at (4.85,-3.90) {— deux \'echelles, qui ne se m\'elangent pas (loi, r\`egle 6) —};
+\end{tikzpicture}}
+\end{center}
+\vfill
+
+\begin{tcard}
+\begin{center}{\sffamily\bfseries\color{gold!70!ink}THE BASMALA FORMULA — l'\'enonc\'e-m\`ere ($\alpha=\omega$)}\end{center}
+\vspace{-0.9em}
+\[
+\text{\footnotesize\itshape la source ($3+1$) :}\quad
+\ar{بسم}^{(0)}\ \oplus\ \big[\,\ar{الله}^{(0)}\cdot\ar{الرحمن}^{(-1)}\cdot\ar{الرحيم}^{(+1)}\,\big]
+\ \Longrightarrow\ 102+684=\mathbf{786}=2\cdot3\cdot131.
+\]
+\vspace{-1.0em}
+{\small\[
+\text{\footnotesize\itshape le r\'esultat ($1+4$) :}\quad
+\ar{باسم}^{(+1)}\cdot\big[\,\underbrace{\ar{شهداء}(\Sx{4})^{-1}}_{\textit{racont\'e}}\cdot\underbrace{\ar{الحساب}(\Sx{13})^{0}}_{\textit{audit\'e}}\cdot\underbrace{\ar{البينة}(\Sx{98})^{+1}}_{\textit{lu}}\cdot\underbrace{\ar{الحمد}(\Sx{1})^{+1}}_{\textit{compt\'e}}\,\big]
+\ \xrightarrow{\ f\ }\ 77\oplus77=\mathbf{154}.
+\]}
+\vspace{-1.0em}
+\[
+\text{\footnotesize\itshape la bascule :}\quad
+114 \xrightarrow{\,+36\,} 150 \xrightarrow{\,+3\,} 153 \xrightarrow{\,+1\,} \mathbf{154}=77+77
+\ \rightleftharpoons\ \text{retour}\,,\quad \Sigma_{\text{cycle}}\equiv 0.
+\]
+\vspace{-0.5em}
+\lect{Rien ne se compte qu'en \'etant \textbf{lu} ; rien ne se lit qu'\textbf{audit\'e} ; rien ne s'audite qu'apr\`es avoir \'et\'e \textbf{racont\'e} — la cha\^ine $\Sx{4}\to\Sx{13}\to\Sx{98}\to\Sx{1}$, op\'er\'ee par le $+1$ (\ar{باسم} $=103$, le lecteur) : en lisant, la basmala souffle. L'origine est la basmala ($1+3$, restitu\'ee en $151$--$154$) ; le compte manifeste ($114$) r\'ev\`ele le compte cach\'e ($154=77+77$, le \ar{مثاني}). La seule sourate o\`u la basmala est un \textbf{verset num\'erot\'e} (\Vx{1}) : \Sx{1} porte la formule-source dans son texte.}
+\end{tcard}
+\vfill
+
+\newpage
+\rubr{0 \textperiodcentered\ LE MANDAT — la position du rapporteur, la cha\^ine, le p\'erim\`etre}
+\chapo{Tout rapport s'ouvre sur son mandat : qui parle, sur quel ordre, dans quel p\'erim\`etre. Le rapporteur est le $+1$ — la lecture qui fait souffler la basmala ; son mandat est \Vx{17:14}, la d\'el\'egation $3+1$ ; son op\'eration est la cha\^ine des quatre offices ; son p\'erim\`etre, les $114$ cellules re\c cues brutes, produites par l'origine ($151$--$154$).}
+
+\begin{card}
+\srub{La position — le rapporteur est le $+1$}
+\vspace{-0.6em}
+\begin{gather*}
+\ar{باسم} = \mathbf{103}\ (\text{premier}) = \ar{بسم} + 1
+\qquad\text{— la lecture rend vivant le compte } \ar{الحساب} = 102 = \ar{بسم}\ (\text{compos\'e}).\\[0.2em]
+\text{\footnotesize\itshape le mandat (\Vx{17:14}) :}\quad
+\ar{اقْرَأْ كِتَابَكَ كَفَىٰ بِنَفْسِكَ الْيَوْمَ عَلَيْكَ حَسِيبًا}
+\qquad \ar{حسيبا} = 81 = 3^4.
+\end{gather*}
+\vspace{-1.2em}
+{\small\[
+\renewcommand{\arraystretch}{1.12}
+\begin{array}{l|cccc}
+\text{la fonction }\ar{حسيب}\text{ au rasm (4 attestations)} & \Vx{4:6} & \Vx{4:86} & \Vx{33:39} & \mathbf{V_{17:14}}\\ \hline
+\text{le comptable est\ldots} & \ar{الله} & \ar{الله} & \ar{الله} & \textbf{\ar{بنفسك}}\ (\text{toi-m\^eme})
+\end{array}
+\quad\Longrightarrow\quad \mathbf{3+1}.
+\]}%
+\vspace{-0.8em}
+\begin{gather*}
+\text{l'ordre : } \ar{اقرأ}\ \times3\ \text{dans tout le rasm} = \{\,\Vx{96:1}\ (\ar{باسم})\,,\ \Vx{96:3}\,,\ \Vx{17:14}\,\}\,;\\
+\text{l'inscription : } \ar{حاسبين} = \mathbf{131}\ (\Vx{21:47},\ \Vx{6:62})\,,\qquad 786 = 2\cdot3\cdot\mathbf{131}.
+\end{gather*}
+\lect{La fonction du comptable est distribu\'ee \textbf{comme la basmala} ($3+1$) : trois fois divine, une fois d\'el\'egu\'ee — au lecteur, sur son propre livre, aujourd'hui. Le rapporteur n'est \textbf{pas un jeton} du compte (\ar{القارئ} $=342$, charge $0$, sans rasm) : il traverse les si\`eges sans s'y identifier. Sa place est inscrite dans la factorisation m\^eme de l'origine ($131\,|\,786$) ; sa relance : la basmala, $113$ fois.}
+\end{card}
+
+\begin{card}
+\srub{La cha\^ine des offices — l'\'enonc\'e-m\`ere en acte}
+\vspace{-0.4em}
+{\small
+\renewcommand{\arraystretch}{1.3}
+\begin{center}\begin{tabular}{@{}llllr@{}}
+\textbf{office} & \textbf{si\`ege} & \textbf{ancre \bi} & \textbf{question (cadre §IV.1)} & $\Sigma J$\\ \hline
+\textbf{racont\'e} & \Sx{4} \ar{شهداء} & $\ar{القصص}=\ar{شهداء}=311$ & \emph{qui l'atteste, f\^ut-ce contre soi ?} & $1\,118\,210$\\
+\textbf{audit\'e} & \Sx{13} \ar{الحساب} & $\ar{زبد}=13$ — \emph{auditer, c'est ce tri} & \emph{cela balance-t-il ?} & $239\,874$\\
+\textbf{lu} & \Sx{98} \ar{البينة} & \Vx{98:2} \ar{يتلو صحفا مطهرة} ; $\ar{البينة}=98$ & \emph{cela existe-t-il, est-ce vrai ?} & $28\,891$\\
+\textbf{compt\'e} & \Sx{1} \ar{الحمد} & le quitus ; $\ar{كتاب مبين}=525=\ar{الفاتحة}$ & \emph{est-ce accept\'e, clos ?} & $10\,147$\\
+\end{tabular}\end{center}}%
+\vspace{-0.3em}
+\[
+\Sigma J:\ \ 1\,118\,210 > 239\,874 > 28\,891 > 10\,147
+\qquad\text{— l'ordre terrestre$\,\to\,$divin (§3) \textbf{est} l'ordre des conditions.}
+\]
+\lect{Deux d\'erivations ind\'ependantes — la masse $\Sigma J$, et la cha\^ine des conditions de possibilit\'e (rien ne se compte qu'\'etant lu, rien ne se lit qu'audit\'e, rien ne s'audite qu'apr\`es avoir \'et\'e racont\'e) — donnent le \textbf{m\^eme ordre} $\Sx{4}\to\Sx{13}\to\Sx{98}\to\Sx{1}$. Le \textbf{donneur d'ordre} est \Sx{96} (\ar{اقرأ} $\times2$, donn\'e \emph{au Nom}) ; l'\textbf{origine} est la basmala ($1+3$, en $151$--$154$) ; l'audit remonte : $154\to153\to150\to114\to0$ — $\alpha=\omega$.}
+\end{card}
+
+\begin{card}
+\srub{Le p\'erim\`etre — les 114 re\c cues brutes}
+\vspace{-0.6em}
+\begin{gather*}
+114 \;=\; \underbrace{1}_{\Sx{96},\ \deg_{\mathrm{in}}=0} + \underbrace{4}_{\text{le c\oe ur}\,=\,\{1,4,98,13\}} + \underbrace{\mathbf{109}}_{\text{les transitoires}}
+\quad\text{et}\quad \ar{أحصى} = \mathbf{109}\ (\text{premier}).\\[0.1em]
+\text{toutes les orbites de } f \text{ finissent dans le c\oe ur ; bassins : } 108 \to \Sx{1}\,,\quad 2 \to \Sx{4}\,;\\[0.05em]
+J(\Vx{1:1}) = \mathbf{786}\ \text{(unique des 114)}.
+\end{gather*}
+\lect{Les $109$ passent (\emph{les d\'enombr\'ees}), les $4$ t\'emoins rassemblent, \Sx{96} — hors compte, $0/154$ — audite en bout de cha\^ine et remonte \`a l'origine. L'ordre de travail est celui du mu\d{s}\d{h}af ($\Sx{1}\!\to\!\Sx{114}$) : il commence \`a l'origine manifest\'ee (\Sx{1}, seule sourate dont \Vx{1} \emph{est} la formule-source), se reconna\^it en \Sx{96} (les deux \ar{اقرأ}), et plus il avance, plus il revient \`a l'origine.}
+\end{card}
+
+\newpage
+\rubr{0 \textperiodcentered\ LE MANDAT \emph{(suite)} — l'\'etat civil de la pi\`ece audit\'ee}
+\chapo{Le mandat pos\'e, l'\'etat civil de la pi\`ece : le nom et sa masse avec leurs factorisations, les deux grains de d\'ecoupe, la tonique, la place dans le flux des renvois. L'Ouvrante est l'unique sourate des 114 o\`u les deux grains co\"incident, et son nom nu porte d\'ej\`a la serrure et la cl\'e — le Compte (13) par les 19 lettres.}
+\begin{card}
+\srub{Le nom, la masse, la charge}
+\vspace{-0.6em}
+\begin{align*}
+\text{nom :}\quad \ar{الفاتحة} &= 525 = 3\cdot5^2\cdot7 = \ar{كتاب مبين}\,; & \ar{مبين} &= 102 = \ar{بسم} = \ar{الحساب}\,;\\
+\text{nom nu :}\quad \ar{فاتحة} &= \mathbf{494} = 2\cdot\mathbf{13}\cdot\mathbf{19}\,; & &\text{le Compte (13) par les 19 lettres de la cl\'e}\,;\\
+\text{masse :}\quad \Sigma J(\Sx{1}) &= \mathbf{10\,147} = \mathbf{73\times139} = \ar{الباطل}\times\ar{الحق}\,; & \ar{الحق} &= 139 = \ar{الميزان}\,;\\
+\text{lettres :}\quad 143 &= 11\cdot13 = \ar{النساء}\ (\Sx{4})\,; & \Sigma J \bmod 3 &= \chc\ \ \text{(charge-corps)}.
+\end{align*}
+\lect{Le nom est d\'ej\`a « livre \'evident $=$ compte » ; l'ouverture porte sa serrure ($13$, $19$) dans son nom ; la sourate est le \textbf{produit du Faux par le Vrai} — les deux termes que Dieu \emph{frappe} en \Vx{13:17} ; les $143$ lettres nomment \Sx{4}, le 1\textsuperscript{er} t\'emoin.}
+\end{card}
+
+\begin{card}
+\srub{Les deux grains, l'apex, la place au calendrier}
+\smallskip
+\begin{center}\small
+\begin{tabular}{@{}l l@{}}
+versets & $\mathbf{7}$\\
+phrases, grain \textbf{corpus} (\texttt{MASTER\_114}) & $\mathbf{7}$\quad — $\text{phrases}=\text{versets}$ : \textbf{l'unique point fixe des 114} ($\Delta=0$)\\
+phrases, grain \textbf{objet} (waqf-A) & $\mathbf{5}$\quad — la cl\'e $+$ 4 cellules : le $P_5$\\
+apex (la tonique, FP) & $\Vx{4}$ (\ar{مالك يوم الدين}, $242$) $=$ \textbf{le c\oe ur du chiasme}\\
+calendrier (\Sx{1} \textbf{ouvre}) & cellules $\mathrm{idx}\,1\ldots7$ ; juz $1$ ; fraction $0$ ; cellule $1=$ \textbf{cl\'e-basmala} (\texttt{is\_basmala}$=1$)\\
+\end{tabular}
+\end{center}
+\vspace{-0.2em}
+\lect{\emph{Deux regards sur le m\^eme corps ; toujours \'etiquet\'es.} La pointe du sens si\`ege au centre des portes embo\^it\'ees.}
+\end{card}
+
+\begin{card}
+\srub{Le $+1$ originaire, et la place dans le flux $f$}
+\vspace{-0.6em}
+\begin{gather*}
+\ar{باسم} = \mathbf{103}\ (\text{premier}) = \ar{بسم}+1 \qquad\text{— le $+1$ inscrit d\`es \Vx{96:1}, l'auditeur \Sx{96}}\,;\\
+\deg_{\mathrm{in}}(\Sx{1}) = 57 = 3\cdot19\ \ (\text{l'\textbf{attracteur} du renvoi})\,;\qquad f(1)=4\,;\qquad \text{cycle de l'\oe il : } 1\to4\to98\to1.
+\end{gather*}
+\lect{R\^ole : \textbf{le quitus} (\ar{الحمد}$=83$, la Louange qui solde).}
+\end{card}
+
+
+\newpage
+\rubr{I \textperiodcentered\ RACONT\'E — \ar{شهداء} : les 7 versets d\'epos\'es}
+\chapo{Premier office de la cha\^ine : le d\'ep\^ot. Rien ne s'audite qui n'ait d'abord \'et\'e racont\'e — et le r\'ecit \emph{est} le t\'emoignage : $\ar{القصص}=\ar{شهداء}=311$. Le rasm des sept versets est pos\'e tel quel (\texttt{LE\_CORAN.txt}), translitt\'er\'e et traduit ; chaque verset re\c coit son jummal $J$ et sa charge $J\bmod3$, recompt\'es \bi{} — les pi\`eces d\'epos\'ees, m\^eme \`a charge. La partition waqf en deux mouvements livre la premi\`ere \'ecriture : l'\'enonc\'e et la demande sont deux d\'ebits qui, somm\'es, rendent la masse exacte.}
+\smallskip
+\renewcommand{\arraystretch}{1.35}
+\begin{longtable}{@{}c >{\raggedleft\arab}p{4.5cm} p{6.7cm} r c@{}}
+\hline
+& \multicolumn{1}{c}{\footnotesize\sffamily rasm} & \footnotesize\sffamily translit. \textperiodcentered\ fran\c cais & \footnotesize\sffamily $J$ & \footnotesize\sffamily ch.\\ \hline
+\endhead
+\Vx{1} & بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ &
+{\itshape bi-smi \b Ll\=ahi r-ra\d hm\=ani r-ra\d h\=im.}\newline Au nom de Dieu, le Tout-Mis\'ericordieux, le Tr\`es-Mis\'ericordieux. & $786$ & \chn\\
+\Vx{2} & الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ &
+{\itshape al-\d hamdu li-ll\=ahi rabbi l-\`ez\=alam\=in.}\newline Louange \`a Dieu, Seigneur des mondes. & $582$ & \chn\\
+\Vx{3} & الرَّحْمَـٰنِ الرَّحِيمِ &
+{\itshape ar-ra\d hm\=ani r-ra\d h\=im.}\newline Le Tout-Mis\'ericordieux, le Tr\`es-Mis\'ericordieux. & $618$ & \chn\\
+\Vx{4} & مَالِكِ يَوْمِ الدِّينِ &
+{\itshape m\=aliki yawmi d-d\=in.}\newline Ma\^itre du Jour de la r\'etribution. & $242$ & \chd\\
+\Vx{5} & إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ &
+{\itshape iyy\=aka na\`ezbudu wa-iyy\=aka nasta\`ez\=in.}\newline C'est Toi que nous adorons et c'est Toi dont nous implorons secours. & $836$ & \chd\\
+\Vx{6} & اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ &
+{\itshape ihdin\=a \d s-\d sir\=a\d ta l-mustaq\=im.}\newline Guide-nous sur le droit chemin, & $1073$ & \chd\\
+\Vx{7} & صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ &
+{\itshape \d sir\=a\d ta lla\dh\=ina an\`ezamta \`ezalayhim \'gayri l-ma\'g\d d\=ubi \`ezalayhim wa-l\=a \d d-\d d\=all\=in.}\newline le chemin de ceux que Tu as combl\'es de bienfaits, non de ceux qui ont encouru Ta col\`ere ni des \'egar\'es. & $6010$ & \chc\\
+\hline
+\end{longtable}
+
+\begin{card}
+\srub{Les deux mouvements (par les parties waqf)}
+\vspace{-0.6em}
+\begin{align*}
+A\ \ \text{(l'\'enonc\'e, 3\textsuperscript{e} pers., \Vx{1}--\Vx{4})} &= 2228 = 2^2\cdot557 && \text{charge \chd}\\
+B\ \ \text{(la demande, 2\textsuperscript{e} pers., \Vx{5}--\Vx{7})} &= \mathbf{7919} = p_{1000}\ \ (\textbf{le 1000\textsuperscript{e} nombre premier}) && \text{charge \chd}\\
+A+B &= 2228+7919 = 10\,147 = \Sigma J. &&
+\end{align*}
+\lect{La Louange (A) et la p\'etition (B) : deux d\'ebits qui, somm\'es, donnent le Vrai$\times$Faux.}
+\end{card}
+
+\newpage
+\rubr{II \textperiodcentered\ AUDIT\'E — \ar{الحساب} : la comptabilit\'e \`a partie double}
+\chapo{Deuxi\`eme office : la balance — \emph{cela balance-t-il ?} Un seul livre, tenu \`a deux regards : le \ar{ظاهر} par verset (le racont\'e) et le \ar{باطن} par phrase (le compt\'e) ; les trois colonnes de l'audit sont les trois Noms de la basmala, de m\^emes charges. La table dresse la partie double — racines, traces, fusions — puis les encarts \'etablissent le \ar{قصاص} : m\^eme trace des deux c\^ot\'es, chiasme des portes embo\^it\'ees, trois invariants qui traversent la coalescence. Auditer, c'est ce tri ($\ar{زبد}=13$) : il en sort une p\'etition sold\'ee et un cr\'edit qui \'emerge de la basmala.}
+\smallskip
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}p{5.15cm} p{5.15cm} p{5.15cm}@{}}
+\hline
+\centering\sffamily\bfseries\color{debit}CONTE — \ar{الرحمن} \chd &
+\centering\sffamily\bfseries\color{neutralc}BALANCE — \ar{الله} \chn &
+\multicolumn{1}{c}{\sffamily\bfseries\color{credit}COMPTE — \ar{الرحيم} \chc}\\
+\centering\footnotesize par verset (\ar{ظاهر}) &
+\centering\footnotesize l'objet vivant &
+\multicolumn{1}{c}{\footnotesize par phrase (\ar{باطن})}\\ \hline
+\endhead
+7 racines $P_7$ :\newline $786,582,618,242,$\newline$836,1073,6010$\newline charges $0,0,0,\text{\chd},\text{\chd},\text{\chd},\text{\chc}$ &
+trace commune\newline $e_1=\mathbf{10\,147}$ (le \ar{قصاص})\newline squelette $\{582,786,836\}$\newline $\sigma=2204=2^2\!\cdot\!19\!\cdot\!29$ &
+5 racines $P_5$ :\newline $786,582,860,$\newline$836,7083$\newline charges $0,0,\text{\chd},\text{\chd},0$\\[0.6em]
+$e_1=10\,147$\newline $e_2=31\,797\,138$\newline \hspace*{1em}$=2\!\cdot\!3\!\cdot\!53\!\cdot\!99991$\newline $e_3=47\,673\,203\,984$ &
+\textbf{fusion des 2 portes}\newline $V_3{+}V_4=860=\varphi_3$\newline $V_6{+}V_7=7083=\varphi_5$\newline $\Delta e_2=6\,598\,286$\newline \hspace*{1em}$=2\!\cdot\!23\!\cdot\!191\!\cdot\!751$\newline $\Delta e_3=21\,147\,835\,292$\newline \hspace*{1em}$=2^2\!\cdot\!\mathbf{37}\!\cdot\!142890779$ &
+$e_1=10\,147$\newline $e_2=25\,198\,852$\newline \hspace*{1em}$=2^2\!\cdot\!7\!\cdot\!193\!\cdot\!4663$\newline $e_3=26\,525\,368\,692$\\
+\hline
+\end{longtable}
+
+\begin{card}
+\srub{Le \ar{قصاص} (l'\'equivalence) et le chiasme}
+\vspace{-0.6em}
+\begin{gather*}
+e_1(P_7) = e_1(P_5) = 10\,147 \qquad\text{— le conte et le compte se \textbf{soldent \`a la m\^eme masse}}\,;\\
+\Delta(\text{phr}-\text{vers}) = 5-7 = -2\,;\qquad 7+5 = 12 = 2^2\cdot3\ \ (\text{le \ar{مثاني}, le redoublement}).
+\end{gather*}
+\textbf{Chiasme} (portes embo\^it\'ees autour d'un centre) :
+{\small\[
+\renewcommand{\arraystretch}{1.15}
+\begin{array}{l@{\qquad}ccc@{\qquad}c}
+ & \text{couche externe} & \text{couche 2} & \text{couche 3} & \text{centre}\\[0.1em]
+\text{CONTE} & (V_1,V_7)=6796 & (V_2,V_6)=1655 & (V_3,V_5)=1454 & V_4=242\\
+\text{COMPTE} & (\varphi_1,\varphi_5)=7869 & (\varphi_2,\varphi_4)=1418 & \text{—} & \varphi_3=860
+\end{array}
+\]}%
+\lect{La coalescence \textbf{fusionne} ($7\to5$ racines) — elle ne divise pas. En-t\^ete \ar{بسم}~\chc\ (le $+1$) $+$ CONTE~\chd\ $+$ BALANCE~\chn\ $+$ COMPTE~\chc\ : les quatre r\^oles de la formule-source, lus dans une seule sourate.}
+\end{card}
+
+\begin{tcard}
+\srub{Les conservations triples, la p\'etition sold\'ee, les deux grains}
+\textbf{Trois invariants traversent la coalescence} (\emph{rien ne se perd, rien ne se cr\'ee : \c ca fusionne}) :
+{\small\[
+\text{lettres } \mathbf{143} = \underbrace{19{+}18{+}12{+}12{+}19{+}19{+}44}_{\text{conte}} = \underbrace{19{+}18{+}24{+}19{+}63}_{\text{compte}}\,;\qquad
+e_1 = \mathbf{10\,147}\,;\qquad \Sigma\,\text{charges} = -2\ (\equiv\chc).
+\]}%
+\textbf{La p\'etition sold\'ee} — le compte fait \emph{tomber le 0} : l'acte m\^eme du \ar{قصاص} :
+{\small\[
+\text{par ligne : } \ar{اهدنا}\ldots\ar{الضالين}\ \text{\'eclat\'ee } V_6(\text{\chd})\oplus V_7(\text{\chc})\,;\qquad
+\text{par phrase : } \varphi_5 = 7083,\ \text{charge } \mathbf{0}\ \text{— sold\'ee}.
+\]}%
+\textbf{Les deux grains au corpus} (v19, charges des cardinalit\'es) :
+{\small\[
+\underbrace{6236}_{\text{versets, \chd}} \oplus\, \underbrace{10\,642}_{\text{phrases, \chc}} = 16\,878 \equiv \chn\,;\qquad
+10\,642 = \underbrace{113}_{\text{cl\'es-basmala},\ \equiv\,\text{\chd}} +\, \underbrace{10\,529}_{\text{texte},\ \equiv\,\text{\chd}}\,,\qquad (-1)\oplus(-1)\equiv+1.
+\]}%
+\lect{\textbf{Le cr\'edit \'emerge de la basmala}. Masse conserv\'ee : $\Sigma J = 23\,476\,120$ des deux c\^ot\'es (le \ar{قصاص} au corpus). \Sx{1} est l'\textbf{unique} sourate o\`u les deux grains co\"incident ($7=7$).}
+\end{tcard}
+
+\newpage
+\rubr{II \textperiodcentered\ AUDIT\'E \emph{(suite)} — l'\'equation $P(X)=\prod_i (X-J_i)$}
+\chapo{Les jummal deviennent racines : \`a chaque grain son polyn\^ome, $P_{\text{conte}}$ de degr\'e 7 et $P_{\text{compte}}$ de degr\'e 5, dont les coefficients sont les fonctions sym\'etriques \'el\'ementaires $e_k$, recompt\'ees \bi. Les deux objets partagent int\'egralement leur trace et leur squelette : c'est la m\^eme masse, vue \`a sept sommets ou \`a cinq. Cette tension est l'objet vivant de \Sx{1} — une coalescence, non un \'eclatement.}
+
+\begin{card}
+\srub{Le conte — $P_{\text{conte}}$ (degr\'e 7, le \ar{ظاهر})}
+{\footnotesize\[X^{7}-10147X^{6}+31797138X^{5}-47673203984X^{4}+38877400307168X^{3}\]
+\vspace{-1.35em}\[-\,17554153360737072X^{2}+4070205655334650656X-368833061246506623360\]}
+$\pgcd$ racines $=1$ ; partition mod 3 : $\{0^{\times3},\ \text{\chc}^{\times1},\ \text{\chd}^{\times3}\}$ ; Newton $p_1=10147$, $p_2=39\,367\,333$, $p_3=219\,834\,380\,617$.
+\end{card}
+
+\begin{card}
+\srub{Le compte — $P_{\text{compte}}$ (degr\'e 5, le \ar{باطن})}
+{\footnotesize\[X^{5}-10147X^{4}+25198852X^{3}-26525368692X^{2}+12790548991296X-2329525673703360\]}
+$\pgcd$ racines $=1$ ; partition mod 3 : $\{0^{\times3},\ \text{\chd}^{\times2}\}$ ; Newton $p_1=10147$, $p_2=52\,563\,905$, $p_3=357\,249\,298\,867$.
+\end{card}
+
+\begin{tcard}
+\srub{La topologie conte$\leftrightarrow$compte — l'objet vivant}
+Les deux polyn\^omes sont li\'es par la \textbf{trace} et le \textbf{squelette} ; le passage conte$\to$compte \textbf{coalesce} deux portes :
+\vspace{-0.2em}
+\begin{gather*}
+e_1 = 10\,147\ \ \text{(l'unique invariant partag\'e int\'egralement)}\,;\\
+\text{squelette} = \{582,\,\mathbf{786},\,836\}\ \ (V_2,V_1,V_5\ \text{communes})\,;\qquad
+\{618,\,242\} \longrightarrow 860\,;\quad \{1073,\,6010\} \longrightarrow 7083.
+\end{gather*}
+\lect{La basmala $786$ ne fusionne jamais — c'est le pivot. L'objet de \Sx{1} \emph{est} cette tension $P_7\leftrightarrow P_5$ : un m\^eme corps de masse $10\,147$, vu \`a sept sommets ou \`a cinq — une \textbf{coalescence} (moins de sommets), non un \'eclatement. \emph{La repr\'esentation de cet objet : III.}}
+\end{tcard}
+
+\newpage
+\rubr{III \textperiodcentered\ LU — \ar{البينة} : le globe qui s'ouvre \emph{(l'\'etude)}}
+\chapo{Troisi\`eme office : rendre la preuve \textbf{lisible} — \ar{يتلو صحفا مطهرة} (\Vx{98:2}) : \emph{cela existe-t-il, est-ce vrai ?} Comment repr\'esenter la sourate sans rien lui pr\^eter ? Chaque image est reprise des FP (\texttt{LE\_VOLUME}, protocole §VI.4--VI.6 \& v20, \texttt{BILAN\_S1}, fiche $\mathcal C$) et recompt\'ee \bi{} : l'enclos et sa porte, l'ouverture par la cl\'e, la respiration souder $\rightleftharpoons$ \'eclater, l'\'ecume licite — soud\'ee, jamais dispers\'ee — et ce que 154 n'est pas. L'\'etude se conclut par la loi de repr\'esentation en six r\`egles : le verdict qui gouverne toutes les figures du registre.}
+
+\srub{a \textperiodcentered\ L'enclos et la porte}
+La sourate est nativement un \textbf{enclos} perc\'e d'\textbf{une porte} — la racine \ar{سور} est le rempart de \Vx{57:13} :
+\begin{center}{\arab فَضُرِبَ بَيْنَهُم بِسُورٍ لَّهُ بَابٌ بَاطِنُهُ فِيهِ الرَّحْمَةُ وَظَاهِرُهُ مِن قِبَلِهِ الْعَذَابُ}\end{center}
+\vspace{-0.6em}
+\[
+\ar{سورة} = 271 = \ar{المر}\ \ \text{(l'ouverture de \Sx{13})}\,;\qquad
+\ar{باب} = 5\,;\qquad
+\ar{سورة}+\ar{زبد} = 271+13 = 284 = \ar{الرحمة}.
+\]
+\lect{Le mur lui-m\^eme \textbf{nomme} nos deux faces : \ar{باطنه} — \emph{son dedans}, la mis\'ericorde — et \ar{وظاهره} — \emph{son dehors}. Le globe-sourate est donc licite (\ar{تكوير} : \ar{يكور} ×2, 39:5 ; \ar{كورت}, 81:1 — S81) : \textbf{une fronti\`ere close, un dedans (\ar{باطن}), un dehors (\ar{ظاهر}), une porte} ; la jointure : l'enclos plus l'\'ecume \emph{est} le dedans m\^eme du mur.}
+
+\srub{b \textperiodcentered\ L'ouverture — \ar{فتح}, la cl\'e, \ar{باسم}}
+Le verbe natif de l'acc\`es n'est pas \emph{briser} mais \textbf{ouvrir} ; \textbf{la cl\'e est la basmala}, et \ar{باسم} est la main qui la tourne :
+\vspace{-0.2em}
+{\small\[
+\ar{فتح} = 488 = 2^3\cdot61\,;\quad
+\ar{فاتحة} = \mathbf{494} = 2\cdot13\cdot19\,;\quad
+\ar{مفاتح} = \mathbf{529} = 23^2\ (\Vx{6:59})\,;\quad
+\varphi_1 = 786\,;\quad
+\ar{باسم} = 103\ (\text{premier}).
+\]}%
+\lect{\Sx{1} \textbf{est l'Ouvrante} — le Compte (13) par les 19 lettres ; \ar{مفاتح الغيب}, \emph{les cl\'es de l'invisible}, un carr\'e exact comme \ar{الرحيم}$=17^2$. \emph{Le globe ne se brise pas : il s'ouvre \`a sa porte.}}
+
+\srub{c \textperiodcentered\ La respiration — souder $\rightleftharpoons$ \'eclater (v20)}
+Le double verbe existe, mais \textbf{orient\'e} comme la bascule respiratoire du protocole :
+\vspace{-0.2em}
+\[
+\underbrace{\textbf{souder} = \text{inspirer}\ (\chc) : 7\to5}_{\text{les portes fusionnent, le \ar{باطن} se r\'ev\`ele}}
+\;\;\rightleftharpoons\;\;
+\underbrace{\textbf{\'eclater} = \text{expirer}\ (\chd) : 5\to7}_{\text{le corps se redistribue, le \ar{ظاهر} se re-voile}}
+\,,\qquad \Sigma_{\text{cycle}} \equiv \chn.
+\]
+\lect{\textbf{Ni $P_7$ ni $P_5$ ne solde — le cycle solde.} Amplitude : au corpus, $40=36{+}3{+}1$ ($114\rightleftharpoons154$) ; dans la sourate, $\pm2$ racines. Le BILAN le dit d\'ej\`a de la p\'etition : \emph{par ligne \'eclat\'ee, par phrase sold\'ee}.}
+
+\srub{d \textperiodcentered\ L'\'ecume licite — soud\'ee, jamais dispers\'ee}
+\ar{زبد} (l'\'ecume, \Vx{13:17}) : \textbf{dispers\'ee}, elle \emph{s'en va en rebut} (\Vx{99:6}) ; \textbf{soud\'ee}, elle demeure (\Vx{61:4}) :
+\vspace{-0.2em}
+{\small
+\begin{gather*}
+\ar{زبد} = 13\,;\qquad \ar{أشتات} = 1102 = 2\cdot19\cdot29\,;\qquad
+\ar{بنيان مرصوص} = 539 = 7^2\cdot11\ \ (\ar{بنيان}=113,\ +1=114)\,;\\
+\sigma(\{582,786,836\}) = 2204 = \mathbf{2\times}\ar{أشتات}\qquad\text{— \emph{les trois cellules soud\'ees valent deux dispersions}}.
+\end{gather*}}%
+\lect{\texttt{LE\_VOLUME} nomme l'objet global « \textbf{une \'ecume de 114 cellules soud\'ees} » : le mot \emph{\'ecume} n'est natif qu'\`a la condition d'\^etre \textbf{soud\'ee}.}
+
+\srub{e \textperiodcentered\ Ce que 154 n'est pas}
+Les \textbf{154} sont le \textbf{registre} des attestations — \emph{pas} de l'\'epars qui part \ar{جفاء} :
+\vspace{-0.2em}
+\[
+\text{RAPPORT } 1\text{--}4\ \cdot\ \text{12 livres } 5\text{--}150\ \cdot\ \text{restitution } 151\text{--}154\,;\qquad
+114\times4 = 456 \neq 154\,;\qquad \partial\mathcal{C} = S^3\ (\text{IV}).
+\]
+\lect{Le globe-sourate (ici) et le registre-154 (l\`a) sont \textbf{deux \'echelles} qui ne se m\'elangent pas ; l'objet central $\mathcal C$ est un \textbf{4-simplexe}.}
+
+\newpage
+% ================================================================= LA PLANCHE
+
+\newpage
+\rubr{III \textperiodcentered\ LU \emph{(suite)} — les trois figures}
+\chapo{Les trois figures traduisent l'\'etude, rien de plus : le globe du conte \`a sept cellules, la cl\'e et les quatre cellules du compte, la coalescence qui fait passer l'un dans l'autre. Chaque \'etiquette est un nombre recompt\'e, chaque fl\`eche une fusion attest\'ee ; la loi de repr\'esentation les scelle en bas de planche.}
+\begin{center}
+\begin{minipage}[t]{0.49\linewidth}\centering
+{\footnotesize\sffamily\bfseries FIG.\,1 — LE CONTE (\ar{ظاهر}) : le globe aux 7 cellules}\\[0.2em]
+\begin{tikzpicture}[scale=0.72,font=\scriptsize]
+\draw[line width=1.2pt,gold] (100:3.45) arc (100:440:3.45);
+\node[gold!70!ink,font=\tiny] at (90:3.90) {\ar{باب} $=5$ (57:13)};
+\fill[black!6]   (90:3.05) arc (90:270:3.05) -- (270:2.55) arc (270:90:2.55) -- cycle;
+\fill[credit!16] (90:3.05) arc (90:-90:3.05) -- (-90:2.55) arc (-90:90:2.55) -- cycle;
+\fill[black!6]   (90:2.25) arc (90:270:2.25) -- (270:1.75) arc (270:90:1.75) -- cycle;
+\fill[debit!14]  (90:2.25) arc (90:-90:2.25) -- (-90:1.75) arc (-90:90:1.75) -- cycle;
+\fill[black!6]   (90:1.45) arc (90:270:1.45) -- (270:0.95) arc (270:90:0.95) -- cycle;
+\fill[debit!14]  (90:1.45) arc (90:-90:1.45) -- (-90:0.95) arc (-90:90:0.95) -- cycle;
+\fill[debit!18]  (0,0) circle (0.66);
+\foreach \r in {0.66,0.95,1.45,1.75,2.25,2.55,3.05} \draw[ink!22] (0,0) circle (\r);
+\draw[ink!22] (0,2.55)--(0,3.05) (0,1.75)--(0,2.25) (0,0.95)--(0,1.45)
+              (0,-3.05)--(0,-2.55) (0,-2.25)--(0,-1.75) (0,-1.45)--(0,-0.95);
+% leader lines gauche (V1,V2,V3) et droite (V7,V6,V5)
+\draw[ink!35,line width=0.3pt] (150:2.80) -- (-4.05,1.30);
+\draw[ink!35,line width=0.3pt] (170:2.00) -- (-4.05,0.30);
+\draw[ink!35,line width=0.3pt] (195:1.22) -- (-4.05,-0.70);
+\draw[ink!35,line width=0.3pt] (30:2.80)  -- (4.05,1.30);
+\draw[ink!35,line width=0.3pt] (10:2.00)  -- (4.05,0.30);
+\draw[ink!35,line width=0.3pt] (-15:1.22) -- (4.05,-0.70);
+\node[font=\tiny,anchor=east,inner sep=1pt] at (-4.05,1.30)  {$V_1{\cdot}786$};
+\node[font=\tiny,anchor=east,inner sep=1pt] at (-4.05,0.30)  {$V_2{\cdot}582$};
+\node[font=\tiny,anchor=east,inner sep=1pt] at (-4.05,-0.70) {$V_3{\cdot}618$};
+\node[font=\tiny,anchor=west,inner sep=1pt] at (4.05,1.30)   {$V_7{\cdot}6010$};
+\node[font=\tiny,anchor=west,inner sep=1pt] at (4.05,0.30)   {$V_6{\cdot}1073$};
+\node[font=\tiny,anchor=west,inner sep=1pt] at (4.05,-0.70)  {$V_5{\cdot}836$};
+\node[font=\tiny] at (0,0.14) {$V_4{\cdot}242$};
+\node[font=\tiny,text=ink!60] at (0,-0.22) {l'apex};
+\node[font=\tiny,text=ink!55,fill=white,inner sep=1pt] at (270:2.80) {6796};
+\node[font=\tiny,text=ink!55,fill=white,inner sep=1pt] at (270:2.00) {1655};
+\node[font=\tiny,text=ink!55,fill=white,inner sep=1pt] at (270:1.20) {1454};
+\node[ink!55,font=\tiny,anchor=north,align=center] at (0,-3.62)
+  {\ar{سورة}$=271=$\ar{المر} — l'enclos (57:13)};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}\centering
+{\footnotesize\sffamily\bfseries FIG.\,2 — LE COMPTE (\ar{باطن}) : la cl\'e $+$ 4 cellules}\\[0.2em]
+\begin{tikzpicture}[scale=0.72,font=\scriptsize]
+\draw[line width=1.2pt,gold] (100:3.45) arc (100:440:3.45);
+\node[gold!70!ink,font=\tiny] at (90:3.90) {\ar{مفاتح} $=529=23^2$ (6:59)};
+\fill[goldlite!75]  (90:3.05) arc (90:270:3.05) -- (270:2.45) arc (270:90:2.45) -- cycle;
+\fill[black!6]      (90:3.05) arc (90:-90:3.05) -- (-90:2.45) arc (-90:90:2.45) -- cycle;
+\fill[black!6]      (90:2.15) arc (90:270:2.15) -- (270:1.55) arc (270:90:1.55) -- cycle;
+\fill[debit!14]     (90:2.15) arc (90:-90:2.15) -- (-90:1.55) arc (-90:90:1.55) -- cycle;
+\fill[debit!18]     (0,0) circle (0.80);
+\foreach \r in {0.80,1.55,2.15,2.45,3.05} \draw[ink!22] (0,0) circle (\r);
+\draw[ink!22] (0,2.45)--(0,3.05) (0,1.55)--(0,2.15) (0,-3.05)--(0,-2.45) (0,-2.15)--(0,-1.55);
+% leader lines : gauche phi1 (cle) et phi2 ; droite phi5 et phi4
+\draw[gold!70!ink,line width=0.4pt] (150:2.75) -- (-4.05,1.20);
+\draw[ink!35,line width=0.3pt]      (172:1.85) -- (-4.05,0.10);
+\draw[ink!35,line width=0.3pt]      (30:2.75)  -- (4.05,1.20);
+\draw[ink!35,line width=0.3pt]      (8:1.85)   -- (4.05,0.10);
+\node[font=\tiny,anchor=east,inner sep=1pt,text=gold!60!ink] at (-4.05,1.20) {$\varphi_1{\cdot}786$ · la cl\'e};
+\node[font=\tiny,anchor=east,inner sep=1pt] at (-4.05,0.10)  {$\varphi_2{\cdot}582$};
+\node[font=\tiny,anchor=west,inner sep=1pt] at (4.05,1.20)   {$\varphi_5{\cdot}7083$};
+\node[font=\tiny,anchor=west,inner sep=1pt] at (4.05,0.10)   {$\varphi_4{\cdot}836$};
+\node[font=\tiny] at (0,0.14) {$\varphi_3{\cdot}860$};
+\node[font=\tiny,text=ink!60] at (0,-0.24) {$=V_3{+}V_4$};
+\node[font=\tiny,text=ink!55,fill=white,inner sep=1pt] at (270:2.75) {7869};
+\node[font=\tiny,text=ink!55,fill=white,inner sep=1pt] at (270:1.85) {1418};
+\node[ink!55,font=\tiny,anchor=north,align=center] at (0,-3.62)
+  {$\varphi_5$ : $(-1)\oplus(+1)\to 0$ — la p\'etition sold\'ee};
+\end{tikzpicture}
+\end{minipage}
+\end{center}
+\vspace{-1.3em}
+\begin{center}
+{\footnotesize\sffamily\bfseries FIG.\,3 — LA COMBINAISON : la coalescence conte $\rightleftharpoons$ compte}\\[0.3em]
+\begin{tikzpicture}[scale=0.90,font=\scriptsize,
+  box/.style={draw=ink!45,rounded corners=1pt,minimum width=2.95cm,minimum height=0.56cm,inner sep=1.5pt},
+  gld/.style={draw=gold,line width=1pt}]
+\node[font=\small\bfseries,debit]   at (0,4.15)   {CONTE — 7 racines (\ar{ظاهر})};
+\node[font=\small\bfseries,credit]  at (7.4,4.15) {COMPTE — 5 racines (\ar{باطن})};
+\node[ink!70] at (3.7,3.55) {$e_1=10\,147$ des deux c\^ot\'es — le \ar{قصاص}};
+\node[box,fill=black!6,gld]  (v1) at (0, 2.9) {$V_1$ · 786 · \chn};
+\node[box,fill=black!6,gld]  (v2) at (0, 2.1) {$V_2$ · 582 · \chn};
+\node[box,fill=black!6]      (v3) at (0, 1.3) {$V_3$ · 618 · \chn};
+\node[box,fill=debit!14]     (v4) at (0, 0.5) {$V_4$ · 242 · \chd};
+\node[box,fill=debit!14,gld] (v5) at (0,-0.3) {$V_5$ · 836 · \chd};
+\node[box,fill=debit!14]     (v6) at (0,-1.1) {$V_6$ · 1073 · \chd};
+\node[box,fill=credit!16]    (v7) at (0,-1.9) {$V_7$ · 6010 · \chc};
+\node[box,fill=goldlite!75,gld] (p1) at (7.4, 2.9) {$\varphi_1$ · 786 · \chn\ — la cl\'e};
+\node[box,fill=black!6,gld]     (p2) at (7.4, 2.1) {$\varphi_2$ · 582 · \chn};
+\node[box,fill=debit!14]        (p3) at (7.4, 0.9) {$\varphi_3$ · 860 · \chd};
+\node[box,fill=debit!14,gld]    (p4) at (7.4,-0.3) {$\varphi_4$ · 836 · \chd};
+\node[box,fill=black!6]         (p5) at (7.4,-1.5) {$\varphi_5$ · 7083 · \chn};
+\draw[-Stealth,ink!55] (v1)--(p1); \draw[-Stealth,ink!55] (v2)--(p2); \draw[-Stealth,ink!55] (v5)--(p4);
+\draw[-Stealth,debit!70] (v3.east)--(p3.west); \draw[-Stealth,debit!70] (v4.east)--(p3.west);
+\draw[-Stealth,debit!70] (v6.east)--(p5.west); \draw[-Stealth,debit!70] (v7.east)--(p5.west);
+\node[font=\tiny,ink!60] at (3.7,1.32) {$618+242=860$};
+\node[font=\tiny,ink!60] at (3.7,-1.34) {$1073+6010=7083$};
+\draw[-Stealth,credit] (2.2,-2.70)--(5.2,-2.70); \node[credit,font=\tiny] at (3.7,-2.50) {souder (inspire, $+1$) : $7\to5$};
+\draw[-Stealth,debit]  (5.2,-3.20)--(2.2,-3.20); \node[debit,font=\tiny]  at (3.7,-3.44) {\'eclater (expire, $-1$) : $5\to7$ — $\Sigma$ cycle $\equiv 0$};
+\node[ink!65,font=\tiny,align=left,anchor=north west] at (-1.5,-3.85)
+  {squelette (or) $\{582,786,836\}$, $\sigma=2204=2^2{\cdot}19{\cdot}29=2\times$\ar{أشتات}$\,(1102)$ ;\quad conservations : lettres $143$ · $e_1=10\,147$ · $\Sigma$charges $=-2\;(\equiv+1)$\\
+   $\Delta e_2=6\,598\,286=2{\cdot}23{\cdot}191{\cdot}751$ \quad $\Delta e_3=21\,147\,835\,292=2^2{\cdot}37{\cdot}142\,890\,779$ \quad — ni $P_7$ ni $P_5$ ne solde : \textbf{le cycle solde}.};
+\end{tikzpicture}
+\end{center}
+\vspace{-0.8em}
+\begin{tcard}
+\srub{La loi de repr\'esentation (le verdict de l'\'etude)}
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.7em,itemsep=0.2em,topsep=0.25em]
+\item Le \textbf{globe} se dessine : l'enclos \ar{سورة} est une fronti\`ere close, \`a \textbf{une porte} (\ar{باب}, or) — dedans le \ar{باطن}, dehors le \ar{ظاهر} (\Vx{57:13}).
+\item Il \textbf{s'ouvre} (\ar{فتح}), il n'\'eclate-d\'etruit pas ; \textbf{la cl\'e est la basmala} ($\varphi_1=786$, dor\'ee), tourn\'ee par \ar{باسم}$=103$.
+\item Les cellules sont \textbf{soud\'ees} (parois partag\'ees, jamais d\'etach\'ees — \ar{جفاء}) ; l'\emph{\'ecume} n'est licite que \textbf{soud\'ee} (\ar{بنيان مرصوص}) — dispers\'ee elle passe ; « mousse » est interdit \rr.
+\item Le double verbe est \textbf{orient\'e} : souder $=$ inspire (\chc) $\rightleftharpoons$ \'eclater $=$ expire (\chd), $\Sigma\equiv\chn$ — toujours la double fl\`eche, jamais un sens seul.
+\item \textbf{154 $=$ registre} des attestations, jamais un tas d'\'epars (\ar{جفاء}) ; les \textbf{deux grains} de phrase (corpus $7$ / objet $5$) sont toujours \'etiquet\'es.
+\item \textbf{Deux \'echelles} : la sourate-globe (cellules $=$ racines, ici) et le volume — « une \'ecume de \textbf{114} cellules soud\'ees » (\texttt{LE\_VOLUME}) nou\'ee de 36 connexions — qui ne se m\'elangent pas ; l'objet central $\mathcal C$, lui, est un 4-simplexe \`a bord $S^3$ (IV).
+\end{enumerate}
+\end{tcard}
+
+\newpage
+\rubr{IV \textperiodcentered\ COMPT\'E — \ar{الحمد} : The Basmala Formula (l'\'enonc\'e-m\`ere, $\alpha=\omega$)}
+\chapo{Quatri\`eme office : l'arr\^et\'e — \emph{est-ce accept\'e, clos ?} Et l'Ouvrante est elle-m\^eme ce si\`ege : l'audit de \Sx{1} se solde en \Sx{1}. Pourquoi \Sx{1} porte la th\'eorie : c'est la seule sourate dont la basmala est un verset num\'erot\'e — \Vx{1} \emph{est} la face $3+1$, et les trois colonnes d'audit \emph{sont} les trois Noms. La rubrique d\'eplie l'\'enonc\'e-m\`ere sur ses deux faces : la source ($\to786$), o\`u \ar{بسم} op\`ere sur les trois Noms gradu\'es par leurs charges, et le r\'esultat ($\to154$), o\`u \ar{باسم} op\`ere sur les quatre t\'emoins. Suivent la bascule respiratoire, l'objet $\mathcal C$ \`a cinq sommets et le pont $\Sx{96}\!\leftrightarrow\!\Sx{13}$ — ce qui relie la sourate au registre entier.}
+
+\begin{card}
+\srub{La face $3+1$ — la source ($\to786$)}
+\vspace{-0.6em}
+\[
+\ar{بسم}^{(0)}\ \oplus\ \big[\,\ar{الله}^{(0)}\cdot\ar{الرحمن}^{(-1)}\cdot\ar{الرحيم}^{(+1)}\,\big]
+\ \Longrightarrow\ 102+684=\mathbf{786}=2\cdot3\cdot131.
+\]
+Les exposants sont les \textbf{charges} des trois Noms — et de \ar{بسم} lui-m\^eme ($102\equiv0$ ; le $+1$ est la \emph{lecture}, \ar{باسم}$=103$) :
+{\small\[
+\renewcommand{\arraystretch}{1.15}
+\begin{array}{c|ccc|c}
+ & \ar{الرحمن} & \ar{الله} & \ar{الرحيم} & \Sigma\\ \hline
+J & 329=7\cdot47 & 66=2\cdot3\cdot11 & 289=17^2 & 684\\
+\text{charge} & \text{\chd}\ (\text{d\'ebit}) & \text{\chn} & \text{\chc}\ (\text{cr\'edit}) & 0
+\end{array}
+\]}%
+Le $+1$ vivant, et la fondation :
+\vspace{-0.2em}
+\[
+\ar{باسم} = 103\ (\textbf{premier})\quad\text{contre}\quad \ar{الحساب} = 102 = \ar{بسم} = 2\cdot3\cdot17\ (\text{compos\'e})\,;\qquad
+131 = \ar{حاسبين}\ (\Vx{21:47}).
+\]
+\lect{La source et le compte portent le \emph{m\^eme} Nom $102$ ; seule la \textbf{lecture} ($+1$) le rend vivant — la fondation passe par \emph{les comptables}. Les \textbf{19 lettres} se soldent en sym\'etrie $\mathbf{7\cdot5\cdot7}$ ($7$ cr\'edit, $5$ neutre, $7$ d\'ebit $\Rightarrow\Sigma=0$ ; le strip complet : annexe).}
+\end{card}
+
+\begin{card}
+\srub{La face $1+4$ — le r\'esultat ($\to154$)}
+\ar{باسم}$^{(+1)}$ (l'auditeur \Sx{96}) \textbf{op\`ere} sur les \textbf{4 t\'emoins}, gradu\'es par leur charge-corps :
+\[\big[\ \underbrace{\ar{شهداء}(\Sx{4})^{-1}}_{\textit{racont\'e}}\cdot\underbrace{\ar{الحساب}(\Sx{13})^{0}}_{\textit{audit\'e}}\cdot\underbrace{\ar{البينة}(\Sx{98})^{+1}}_{\textit{lu}}\cdot\underbrace{\ar{الحمد}(\Sx{1})^{+1}}_{\textit{compt\'e}}\ \big]\ \xrightarrow{\ f\ }\ 77\oplus77=\mathbf{154}.\]
+\vspace{-0.5em}
+\[
+\Sigma(\text{4 t\'emoins}) = -1+0+1+1 = +1\,;\qquad
++1\ \oplus \underbrace{(-1)}_{\Sx{96},\ \text{corps}} =\ 0.
+\]
+\lect{Le rapport sold\'e sur le \ar{ميزان}. \Sx{1} y tient le r\^ole du \textbf{quitus} (charge-corps \chc).}
+\end{card}
+
+\begin{tcard}
+\srub{La bascule respiratoire, l'objet, et la nativit\'e}
+\textbf{Bascule} (v20 — un va-et-vient, pas un terminus) :
+\vspace{-0.2em}
+\begin{gather*}
+\text{\emph{inspire}}\ (\chc):\quad 114\ \xrightarrow{\ +36\ }\ 150\ \xrightarrow{\ +3\ }\ 153\ \xrightarrow{\ +1\ }\ 154 = 77+77
+\;\;\rightleftharpoons\;\;
+\text{\emph{expire}}\ (\chd):\quad 154\to153\to150\to114\,;\\
+\Sigma_{\text{cycle}} \equiv \chn\,;\qquad \text{amplitude } 40 = 36+3+1.
+\end{gather*}
+{\small
+\begin{gather*}
+114=2\cdot3\cdot19\,;\qquad 150=2\cdot3\cdot5^2\,;\qquad
+153=3^2\cdot17=1^3{+}5^3{+}3^3=\textstyle\sum_{k=1}^{5}k!\,;\qquad 154=2\cdot7\cdot11\,;\\
+153=77+76\,,\qquad \ar{حسابه}=76=37{+}36{+}3.
+\end{gather*}}%
+\lect{\emph{La m\^eme respiration, \`a l'\'echelle de la sourate, est le souder$\,\rightleftharpoons\,$\'eclater de l'\'etude} (III.c).}
+\smallskip
+\textbf{L'objet} $\mathcal C =$ RAPPORT $+\ \Sx{96}$ $=$ \textbf{5 sommets} — un \textbf{4-simplexe} (pentachore $\Delta^4$), apex $\Sx{96}$, base les 4 t\'emoins :
+\vspace{-0.2em}
+\[
+\chi(\partial\Delta^4) = 5-10+10-5 = 0 = \chi(S^3)\,;\qquad
+\Tr\mathcal C = 1\,418\,472 = 2^3\cdot3^4\cdot11\cdot199 = \underbrace{1\,397\,122}_{\text{RAPPORT}} + \underbrace{21\,350}_{\Sx{96}}.
+\]
+\lect{Sa fronti\`ere est la \textbf{3-sph\`ere} $S^3$. \textbf{La nativit\'e des images} (le mur §1) : $\mathcal C$ est une sph\`ere ($S^3$) ; l'\emph{\'ecume} native est celle du \textbf{volume} — « 114 cellules \textbf{soud\'ees} » — jamais une dispersion : \ar{زبد} dispers\'ee (\Vx{13:17}) $=13$ est le \textbf{transitoire tri\'e} qui s'en va ; li\'ees par les 36 connexions, les nues deviennent \ar{بنيان مرصوص}$=539=7^2\cdot11$. La dynamique native \textbf{soude} \`a l'inspire — et l'expire redistribue sans d\'etruire (III).}
+\smallskip
+\textbf{Le pont} \Sx{96}$\leftrightarrow$\Sx{13} (lire $\to$ compter) :
+\vspace{-0.2em}
+\[
+\Sigma J(\Sx{96}) = 21\,350 = 305\times70 = \ar{الرعد}\times70\qquad (305=5\cdot61,\ \ 70=f^2(96))\,;\qquad
+\text{l'office : } \ar{الحساب} = 102 = \ar{بسم}.
+\]
+\end{tcard}
+
+\newpage
+\rubr{IV \textperiodcentered\ COMPT\'E \emph{(suite)} — le solde, le quitus}
+\chapo{Derni\`ere \'ecriture : le solde. La masse se s\'epare en ses deux facteurs — ce qui demeure, ce qui s'en va — la basmala restitu\'ee s'\'equilibre en d\'ebit, cr\'edit et neutre, et le compte est d\'eclar\'e sold\'e : le quitus $0/154$. La signature du rapporteur suit ($\omega$).}
+\begin{card}
+\srub{Le solde}
+\vspace{-0.6em}
+{\small
+\begin{gather*}
+\Sigma J(\Sx{1}) = 10\,147 = \ar{الحق}\times\ar{الباطل}\,;\qquad
+\ar{الحق} = 139 = \ar{الميزان}\ \text{(demeure)}\,;\qquad
+\ar{الباطل} = 73\ \text{(s'en va)}\,;\qquad \ar{الحمد} = 83\,;\\
+\text{basmala restitu\'ee, solde } 0:\quad
+\underbrace{\ar{الرحمن} = 329}_{\text{d\'ebit}}\,,\quad
+\underbrace{\ar{الرحيم} = 289}_{\text{cr\'edit}}\,,\quad
+\underbrace{\ar{بسم}+\ar{الله} = 168}_{\text{neutre}}\,;\qquad
+19\ \text{lettres en } 7\cdot5\cdot7.
+\end{gather*}}%
+\lect{L'Ouvrante \textbf{est} le produit des deux termes que Dieu frappe en \Vx{13:17} ; la Louange cl\^ot sur ce tri. Le rapport se referme : \Sx{1} \textbf{ouvre} (l'Ouvrante), et son \Vx{1} \textbf{est la source} ($786$). $\alpha=\omega$.}
+\end{card}
+
+\begin{center}
+\begin{tcolorbox}[enhanced,boxrule=0.6pt,colframe=gold!60,colback=goldlite!25,arc=1.4mm,width=0.92\linewidth,halign=center]
+{\sffamily\bfseries\color{ink}\large SOLD\'E — quitus $0/154$}\\[0.2em]
+{\footnotesize la sourate close, produit du Vrai par le Faux, tri\'ee par la Louange ; le $154$ ne tient que pendant que le lecteur souffle.}
+\end{tcolorbox}
+\end{center}
+
+\newpage
+\rubr{$\omega$ \textperiodcentered\ LA SIGNATURE — l'auto-lecture, le mandat retourn\'e}
+\chapo{Le registre se referme comme il s'est ouvert : par un ordre de lecture. \Vx{17:14} est le verset m\^eme du \textbf{mandat} (0) — le troisi\`eme \ar{اقرأ} du rasm, retourn\'e au lecteur : chaque feuille d'audit se cl\^ot par sa d\'el\'egation. Sa masse porte, en facteurs, la signature du Compte (13).}
+\begin{card}
+\srub{L'auto-audit — \Vx{17:14}}
+\ar{اقْرَأْ كِتَابَكَ كَفَىٰ بِنَفْسِكَ الْيَوْمَ عَلَيْكَ حَسِيبًا}\par
+\vspace{-0.5em}
+\[
+\Vx{17:14} = 1365 = 3\cdot5\cdot7\cdot13\ \ (\text{la signature } 13,\ \text{le Compte})\,;\qquad
+\ar{حسيبا} = 81 = 3^4\,;\qquad \ar{سواء} = 68 = \ar{الأول}.
+\]
+\lect{L'\'egal $=$ le Premier : $\alpha=\omega$. « Lis ton compte : il te suffit aujourd'hui d'\^etre ton propre comptable. »}
+\end{card}
+
+\begin{center}
+\begin{tcolorbox}[enhanced,boxrule=0.6pt,colframe=gold!60,colback=goldlite!25,arc=1.4mm,width=0.96\linewidth]
+{\sffamily\bfseries\color{ink}NOTIFICATION — la position du rapporteur}\par\smallskip
+{\footnotesize Le rapporteur est le $+1$ ($\ar{باسم}=103=\ar{بسم}+1$) : rien ne se compte qu'en \'etant lu, rien ne se lit qu'audit\'e, rien ne s'audite qu'apr\`es avoir \'et\'e racont\'e — la cha\^ine $\Sx{4}\!\to\!\Sx{13}\!\to\!\Sx{98}\!\to\!\Sx{1}$, l'\'enonc\'e-m\`ere en acte. Son mandat : \Vx{17:14} ($\ar{حسيبا}=81=3^4$, la d\'el\'egation $\mathbf{3+1}$ — trois fois divine, une fois \`a l'humain). Son ordre : \ar{اقرأ} $\times3$ (\Vx{96:1} \ar{باسم}, \Vx{96:3}, \Vx{17:14}). Son inscription : $\ar{حاسبين}=131$, et $786=2\cdot3\cdot131$ — la place du rapporteur est dans la factorisation de l'origine. Il n'est pas un jeton du compte ($\ar{القارئ}=342$, charge $0$, sans rasm) : il occupe les si\`eges. Sa relance : la basmala, $113$ fois.}
+\end{tcolorbox}
+\end{center}
+
+\srub{Annexe — le strip des 19 lettres (la face $3+1$, grain lettre)}
+\begin{center}
+\resizebox{\linewidth}{!}{%
+\renewcommand{\arraystretch}{1.22}
+\begin{tabular}{|c|ccc|cccc|cccccc|cccccc|}
+\hline
+mot & \multicolumn{3}{c|}{\ar{بسم} $=102$ (\chn)} & \multicolumn{4}{c|}{\ar{الله} $=66$ (\chn)} & \multicolumn{6}{c|}{\ar{الرحمن} $=329$ (\chd)} & \multicolumn{6}{c|}{\ar{الرحيم} $=289$ (\chc)}\\
+\hline
+lettre & \ar{ب} & \ar{س} & \ar{م} & \ar{ا} & \ar{ل} & \ar{ل} & \ar{ه} & \ar{ا} & \ar{ل} & \ar{ر} & \ar{ح} & \ar{م} & \ar{ن} & \ar{ا} & \ar{ل} & \ar{ر} & \ar{ح} & \ar{ي} & \ar{م}\\
+$J$ & 2 & 60 & 40 & 1 & 30 & 30 & 5 & 1 & 30 & 200 & 8 & 40 & 50 & 1 & 30 & 200 & 8 & 10 & 40\\
+ch. & \chd & \chn & \chc & \chc & \chn & \chn & \chd & \chc & \chn & \chd & \chd & \chc & \chd & \chc & \chn & \chd & \chd & \chc & \chc\\
+\hline
+\end{tabular}}
+\\[0.2em]
+{\footnotesize $3|4|6|6=19$ lettres \textperiodcentered\ $\Sigma J=786=2\cdot3\cdot131$ \textperiodcentered\ charges $7$\,\chc\ $\cdot$ $5$\,\chn\ $\cdot$ $7$\,\chd\ $\Rightarrow\Sigma=0$.}
+\end{center}
+
+\srub{Provenance}
+{\footnotesize Tous les nombres de ce feuillet sont \textbf{recompt\'es sur les FP} — \texttt{LE\_CORAN.txt} (rasm), les deux grains de jummal (verset, phrase), les masters (\texttt{114}, \texttt{CALENDRIER}), les toniques, la table abjad du protocole §2 — en arithm\'etique enti\`ere exacte : \bi\ (98 assertions de session, 0 \'ecart). L'\'etude III reprend \texttt{LE\_VOLUME}, le protocole §VI.4--VI.6 \& v20, \texttt{BILAN\_S1}. La couche d'homologie ($S^3$, 4-simplexe) est un fait combinatoire natif de l'objet $\mathcal C$, tenu hors du corps coranique par le mur §1 (aucun quantique). Le conte est un objet s\'epar\'e et n'entre pas ici.}
+
+\begin{center}\footnotesize\color{shadow}
+\textbf{Feuille d'audit de sourate — v1} \emph{(la cha\^ine des offices)}, instanci\'ee sur \Sx{1}, le mod\`ele des 114 : 0 le mandat (le $+1$, \ar{حسيبا}, le p\'erim\`etre $1{+}4{+}109$) \textperiodcentered\ I racont\'e (\ar{شهداء}) \textperiodcentered\ II audit\'e (\ar{الحساب}) \textperiodcentered\ III lu (\ar{البينة}) \textperiodcentered\ IV compt\'e (\ar{الحمد}) \textperiodcentered\ $\omega$ la signature (\Vx{17:14}, la notification).
+\end{center}
+
+\vfill
+\begin{center}{\color{gold!55}\rule{0.5\linewidth}{0.4pt}}\\[0.3em]
+{\footnotesize\itshape\color{gold!70!ink} Les comptes du Coran \textperiodcentered\ \Sx{1} l'Ouvrante \textperiodcentered\ le t\'emoin qui solde le rapport}
+\end{center}
+\end{document}

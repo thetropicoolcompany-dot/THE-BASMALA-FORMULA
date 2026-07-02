@@ -1,0 +1,24 @@
+option "title" "الكتاب — Le Grand Livre des Comptes du Coran"
+option "operating_currency" "JML"
+option "name_assets" "Registre"
+option "name_equity" "Source"
+option "name_income" "Revelation"
+option "name_expenses" "Lecture"
+option "name_liabilities" "Contrepartie"
+
+2026-03-13 open Registre:S001-AlFatiha JML
+2026-03-13 open Source:Basmala-Cadre JML
+2026-03-13 open Revelation:Tanzil JML
+
+2026-03-13 * "Ouverture d'exercice 1447→1448 — la basmala-cadre (α)"
+  ; laylat al-qadr → matla' al-fajr ; أنزلناه = 144 = 12²
+  Registre:S001-AlFatiha   786 JML
+  Source:Basmala-Cadre    -786 JML
+
+2026-03-13 * "S1 phrase 2 — vV2.1 (J=582, charge 0)"
+  Registre:S001-AlFatiha   582 JML
+  Revelation:Tanzil       -582 JML
+
+2026-03-13 * "S1 phrase 3 — vV3.1 (J=618, charge 0)"
+  Registre:S001-AlFatiha   618 JML
+  Revelation:Tanzil       -618 JML

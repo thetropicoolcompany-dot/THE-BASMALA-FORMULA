@@ -1,0 +1,71 @@
+% =====================================================================
+% FIGURES_S114_ANNAS_TIKZ_v1.tex
+% S.114 = an-Nās (la clôture, le bord du Livre). TikZ pur.
+%
+%   LA CLÔTURE : la 114e et dernière sourate ; profondeur 7 au cycle (le bord) ;
+%     le dernier mot du Mushaf est الناس (an-nās). Le Voyage se referme ici.
+%   LE BIVALENT : al-Fātiḥa (S.1, le seuil, prof 0, le centre/attracteur) <-> an-Nās
+%     (S.114, la clôture, prof 7, le bord) — les deux extrémités du Mushaf (cœur->bord).
+%   DONNÉES : source/feuille (deg_in=0) ; apex_verset=2 ; pointe -> S.2 ; nV=6 ;
+%     ΣJ=5687 ; m=-1. Voyage : 114->2->70->3->33->20->88->1 (7 pas, le bord rejoint l'œil).
+%   JUMELLE DE S.96 (al-'Alaq) : toutes deux prof 7, apex 2, pointe -> S.2 — la première
+%     révélation et la dernière sourate se rejoignent en al-Baqara.
+%   LE TRISKEL DES NOMS (v.1-3) : رب الناس (rabb=202) / ملك الناس (malik=90) /
+%     اله الناس (ilāh=36) — et اله = 36 = T8 (« Dieu des hommes » pèse le nombre des connexions).
+%   114 = 6·19 = 113+1 (le compte du manifeste, achevé).
+%   LE REFUGE : min al-jinnati wa-n-nās (contre le waswās al-khannās).
+%
+% AUDIT [bi] — RECOMPTÉ : 01_DATA_toniques_114_apex_P2 (f(114)=2, apex=2, prof 7,
+%   deg_in=0) ; 01_DATA_jummal_114_par_verset (nV=6, J(S.114)=5687, m=-1) ;
+%   abjad mashriqī : الناس=142, رب=202, ملك=90, اله=36, وسواس=133, خناس=711.
+%
+% STATUTS : deg_in/apex/profondeur/J/nV/Voyage et abjad [bi] ;
+%   bivalent seuil/bord, triskel des Noms et اله=36=T8 = lecture [R3].
+%
+% /!\ MOTEUR : XeLaTeX (ou LuaLaTeX) — arabe via fontspec.
+%
+% ---- PRÉAMBULE (XeLaTeX), une fois ----
+% \usepackage{fontspec}\newfontfamily\arab[Script=Arabic]{FreeSerif}
+% \usepackage{amsmath,amssymb,tikz}\usetikzlibrary{arrows.meta,calc}
+% \definecolor{ink}{rgb}{0.17,0.14,0.10}\definecolor{gold}{rgb}{0.61,0.48,0.13}
+% \tikzset{
+%  pole/.style={circle,draw=gold,line width=1.3pt,fill=gold!20,inner sep=1pt,minimum size=0.9cm,text=ink,font=\bfseries},
+%  nm/.style={draw=gold,line width=0.9pt,rounded corners=4pt,fill=gold!13,inner sep=4pt,align=center,text=ink,font=\small,minimum width=1.7cm},
+%  rd/.style={ink,font=\footnotesize,anchor=west,text width=6.8cm},
+%  seal/.style={draw=gold,line width=1.1pt,rounded corners=4pt,fill=gold!14,inner sep=6pt,align=center,text=ink,font=\scriptsize,text width=13.4cm}}
+% --------------------------------------
+% \caption{S.114 (an-Nās), la clôture : la dernière sourate, le bord du Mushaf
+%   (prof.\ 7), source ($\deg_{\rm in}=0$, apex 2, $\to$ S.2), jumelle de S.96 ;
+%   le bivalent al-Fātiḥa$\leftrightarrow$an-Nās (cœur$\to$bord) ; le triskel des Noms
+%   (rabb 202 / malik 90 / ilāh $=36=T_8$) ; $114=6\cdot19=113+1$.}
+
+\begin{tikzpicture}[font=\sffamily]
+\node[ink,font=\itshape\Large] at (7.2,9.1) {S.114 --- an-Nās ({\normalfont\arab الناس}) : la clôture, le bord du Livre};
+\node[ink,font=\small\itshape] at (7.2,8.6) {la dernière sourate --- profondeur 7 (le bord) ; le dernier mot du Mushaf est {\normalfont\arab الناس}};
+% ===== le bivalent al-Fatiha <-> an-Nas =====
+\node[pole] (s1) at (1.7,7.35) {S.1};
+\node[ink,font=\scriptsize,align=center] at (1.7,6.62) {al-Fātiḥa\\ le seuil --- prof 0};
+\node[pole] (s114) at (5.7,7.35) {S.114};
+\node[ink,font=\scriptsize,align=center] at (5.7,6.62) {an-Nās\\ la clôture --- prof 7};
+\draw[gold,{Stealth[length=2mm]}-{Stealth[length=2mm]},line width=0.9pt,dash pattern=on 2.5pt off 2pt] (s1) -- (s114);
+\node[ink,font=\scriptsize] at (3.7,7.62) {le Mushaf : du cœur au bord};
+% ===== le triskel des Noms (v.1-3) =====
+\node[ink,font=\footnotesize\bfseries] at (3.5,5.75) {Le triskel des Noms (v.1--3)};
+\node[nm] (rabb) at (3.5,5.0) {{\arab رب الناس}\\ $202$};
+\node[nm] (malik) at (2.15,3.85) {{\arab ملك الناس}\\ $90$};
+\node[nm] (ilah) at (4.85,3.85) {{\arab اله الناس}\\ $\mathbf{36}$};
+\draw[gold!75,-{Stealth[length=1.6mm]},line width=0.7pt] (rabb) to[bend right=16] (malik);
+\draw[gold!75,-{Stealth[length=1.6mm]},line width=0.7pt] (malik) to[bend right=16] (ilah);
+\draw[gold!75,-{Stealth[length=1.6mm]},line width=0.7pt] (ilah) to[bend right=16] (rabb);
+\node[gold!85!black,font=\scriptsize,align=center] at (3.5,2.95) {{\arab اله} $=36=T_8$ (les connexions)};
+% ===== 114 =====
+\node[ink,font=\footnotesize,align=center] at (3.5,2.05) {$114 = 6\cdot19 = 113+1$\\ {\scriptsize le compte du manifeste, achevé}};
+% ===== lecture (droite) =====
+\node[rd] at (7.55,7.5) {\textbf{La dernière sourate} (la 114\textsuperscript{e}) : $nV=6$ ; $\Sigma J=5687$ ; $m=-1$};
+\node[rd] at (7.55,6.75) {\textbf{Source} (feuille) : deg$_{\mathrm{in}}=0$ ; apex $=$ v.2 ; pointe $\to$ S.2};
+\node[rd] at (7.55,5.85) {\textbf{Jumelle de S.96} (al-'Alaq) : toutes deux prof 7, apex 2, $\to$ S.2 --- la première révélation et la dernière sourate se rejoignent en al-Baqara};
+\node[rd] at (7.55,4.7) {\textbf{Voyage} : $114\to2\to70\to3\to33\to20\to88\to1$ (7 pas --- le bord rejoint l'œil)};
+\node[rd] at (7.55,3.75) {\textbf{Le refuge} : \emph{min al-jinnati wa-n-nās} (contre le waswās al-khannās) --- {\arab الناس} clôt aussi le Mushaf (son dernier mot)};
+% ===== sceau =====
+\node[seal] at (7.2,1.0) {la clôture du Mushaf --- le dernier mot {\arab الناس} ; \ al-Fātiḥa (le seuil, prof 0) $\leftrightarrow$ an-Nās (le bord, prof 7) ; \ le Voyage se referme \quad·\quad \texttt{[bi]}};
+\end{tikzpicture}

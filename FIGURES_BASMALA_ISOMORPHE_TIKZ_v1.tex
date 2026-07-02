@@ -1,0 +1,156 @@
+% =====================================================================
+% FIGURES_BASMALA_ISOMORPHE_TIKZ_v1.tex
+% Isomorphe géométrique de la basmala : longueur de segment = valeur abjad.
+% Échelle EXACTE, réversible : mesurer un segment = lire sa valeur ;
+% un bord de mot = le total courant (cumul). Superposable sur l'arithmétique
+% PAR CONSTRUCTION — ce que le tracé thuluth n'est pas (projection à sens unique).
+%
+%   بسم=102 · الله=66 · الرحمن=329 · الرحيم=289  ->  ΣJ = 786 = 2·3·131 (4 mots, 19 lettres).
+%   cumuls (droite->gauche) : 0,2,62,102,103,133,163,168,169,199,399,407,447,
+%     497,498,528,728,736,746,786.
+%   charges des mots : بسم 0 · الله 0 · الرحمن −1 · الرحيم +1  (somme 0).
+%
+% AUDIT [bi] — RECOMPTÉ (abjad mashriqī sur le rasm de 1:1, harakāt=0) :
+%   19 lettres porteuses ; Σ largeurs = 786 ; lettre<->valeur bijectif sur le
+%   sous-alphabet employé (ا ب ه ح ي ل م ن س ر, valeurs distinctes) ; cumul<->valeurs
+%   par différences premières. La table abjad N'EST PAS globalement injective
+%   (1←{ا,ء,أ,إ,آ}, 5←{ه,ة}, 6←{و,ؤ}, 10←{ي,ئ,ى}) : la réversibilité tient à CE rasm.
+%
+% /!\ MOTEUR : XeLaTeX (ou LuaLaTeX) — arabe via fontspec.
+%
+% ---- PRÉAMBULE (XeLaTeX), une fois ----
+% \usepackage{fontspec}\newfontfamily\arab[Script=Arabic]{FreeSerif}
+% \usepackage{amsmath,amssymb,tikz}\usetikzlibrary{calc,decorations.pathreplacing}
+% \definecolor{ink}{rgb}{0.17,0.14,0.10}
+% \definecolor{wBism}{rgb}{0.18,0.43,0.56}
+% \definecolor{wAllah}{rgb}{0.69,0.48,0.18}
+% \definecolor{wRahman}{rgb}{0.35,0.49,0.24}
+% \definecolor{wRahim}{rgb}{0.54,0.29,0.42}
+% --------------------------------------
+% \caption{Isomorphe géométrique de la basmala : chaque segment a pour longueur
+%   la valeur abjad de sa lettre (échelle exacte). La suite des lettres, celle des
+%   valeurs et la trajectoire cumulée $2\!\to\!62\!\to\!\dots\!\to\!786$ sont en
+%   bijection (réversibles, superposables) ; $786=2\cdot3\cdot131$. Le tracé
+%   calligraphique, lui, n'est lié à son nombre que par une projection.}
+
+\providecolor{wBism}{rgb}{0.18,0.43,0.56}
+\providecolor{wAllah}{rgb}{0.69,0.48,0.18}
+\providecolor{wRahman}{rgb}{0.35,0.49,0.24}
+\providecolor{wRahim}{rgb}{0.54,0.29,0.42}
+\providecolor{ink}{rgb}{0.17,0.14,0.10}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[ink,font=\large] at (7.000,2.45){Isomorphe géométrique de la basmala — échelle exacte : longueur = valeur abjad};
+\node[ink,font=\small\itshape] at (7.000,2.12){réversible et superposable sur l'arithmétique (mesurer un segment $=$ lire sa valeur ; bord de mot $=$ total courant)};
+\draw[->,gray] (13.40,1.62)--(11.90,1.62);
+\node[gray,font=\scriptsize,anchor=south] at (12.65,1.66){lecture (droite$\to$gauche)};
+\fill[wBism!30,draw=white,line width=0.4pt] (13.964,0) rectangle (14.000,0.9);
+\fill[wBism!50,draw=white,line width=0.4pt] (12.896,0) rectangle (13.964,0.9);
+\fill[wBism!30,draw=white,line width=0.4pt] (12.183,0) rectangle (12.896,0.9);
+\fill[wAllah!50,draw=white,line width=0.4pt] (12.165,0) rectangle (12.183,0.9);
+\fill[wAllah!30,draw=white,line width=0.4pt] (11.631,0) rectangle (12.165,0.9);
+\fill[wAllah!50,draw=white,line width=0.4pt] (11.097,0) rectangle (11.631,0.9);
+\fill[wAllah!30,draw=white,line width=0.4pt] (11.008,0) rectangle (11.097,0.9);
+\fill[wRahman!50,draw=white,line width=0.4pt] (10.990,0) rectangle (11.008,0.9);
+\fill[wRahman!30,draw=white,line width=0.4pt] (10.455,0) rectangle (10.990,0.9);
+\fill[wRahman!50,draw=white,line width=0.4pt] (6.893,0) rectangle (10.455,0.9);
+\fill[wRahman!30,draw=white,line width=0.4pt] (6.751,0) rectangle (6.893,0.9);
+\fill[wRahman!50,draw=white,line width=0.4pt] (6.038,0) rectangle (6.751,0.9);
+\fill[wRahman!30,draw=white,line width=0.4pt] (5.148,0) rectangle (6.038,0.9);
+\fill[wRahim!50,draw=white,line width=0.4pt] (5.130,0) rectangle (5.148,0.9);
+\fill[wRahim!30,draw=white,line width=0.4pt] (4.595,0) rectangle (5.130,0.9);
+\fill[wRahim!50,draw=white,line width=0.4pt] (1.033,0) rectangle (4.595,0.9);
+\fill[wRahim!30,draw=white,line width=0.4pt] (0.891,0) rectangle (1.033,0.9);
+\fill[wRahim!50,draw=white,line width=0.4pt] (0.712,0) rectangle (0.891,0.9);
+\fill[wRahim!30,draw=white,line width=0.4pt] (0.000,0) rectangle (0.712,0.9);
+\draw[gray!60,line width=0.3pt] (13.982,0.9)--(13.982,1.38);
+\node[font=\small,text=wBism] at (13.982,1.42){\arab ب};
+\node[font=\tiny,text=ink] at (13.982,1.62){$2$};
+\node[font=\large,text=wBism] at (13.430,1.18){\arab س};
+\node[font=\small,text=white] at (13.430,0.45){$60$};
+\node[font=\large,text=wBism] at (12.539,1.18){\arab م};
+\node[font=\small,text=white] at (12.539,0.45){$40$};
+\draw[gray!60,line width=0.3pt] (12.174,0.9)--(12.174,1.38);
+\node[font=\small,text=wAllah] at (12.174,1.42){\arab ا};
+\node[font=\tiny,text=ink] at (12.174,1.62){$1$};
+\node[font=\normalsize,text=wAllah] at (11.898,1.18){\arab ل};
+\node[font=\scriptsize,text=ink] at (11.898,1.00){$30$};
+\node[font=\normalsize,text=wAllah] at (11.364,1.18){\arab ل};
+\node[font=\scriptsize,text=ink] at (11.364,1.00){$30$};
+\draw[gray!60,line width=0.3pt] (11.052,0.9)--(11.052,1.38);
+\node[font=\small,text=wAllah] at (11.052,1.42){\arab ه};
+\node[font=\tiny,text=ink] at (11.052,1.62){$5$};
+\draw[gray!60,line width=0.3pt] (10.999,0.9)--(10.999,1.74);
+\node[font=\small,text=wRahman] at (10.999,1.78){\arab ا};
+\node[font=\tiny,text=ink] at (10.999,1.98){$1$};
+\node[font=\normalsize,text=wRahman] at (10.723,1.18){\arab ل};
+\node[font=\scriptsize,text=ink] at (10.723,1.00){$30$};
+\node[font=\large,text=wRahman] at (8.674,1.18){\arab ر};
+\node[font=\small,text=white] at (8.674,0.45){$200$};
+\draw[gray!60,line width=0.3pt] (6.822,0.9)--(6.822,1.38);
+\node[font=\small,text=wRahman] at (6.822,1.42){\arab ح};
+\node[font=\tiny,text=ink] at (6.822,1.62){$8$};
+\node[font=\large,text=wRahman] at (6.394,1.18){\arab م};
+\node[font=\small,text=white] at (6.394,0.45){$40$};
+\node[font=\large,text=wRahman] at (5.593,1.18){\arab ن};
+\node[font=\small,text=white] at (5.593,0.45){$50$};
+\draw[gray!60,line width=0.3pt] (5.139,0.9)--(5.139,1.38);
+\node[font=\small,text=wRahim] at (5.139,1.42){\arab ا};
+\node[font=\tiny,text=ink] at (5.139,1.62){$1$};
+\node[font=\normalsize,text=wRahim] at (4.863,1.18){\arab ل};
+\node[font=\scriptsize,text=ink] at (4.863,1.00){$30$};
+\node[font=\large,text=wRahim] at (2.814,1.18){\arab ر};
+\node[font=\small,text=white] at (2.814,0.45){$200$};
+\draw[gray!60,line width=0.3pt] (0.962,0.9)--(0.962,1.38);
+\node[font=\small,text=wRahim] at (0.962,1.42){\arab ح};
+\node[font=\tiny,text=ink] at (0.962,1.62){$8$};
+\draw[gray!60,line width=0.3pt] (0.802,0.9)--(0.802,1.74);
+\node[font=\small,text=wRahim] at (0.802,1.78){\arab ي};
+\node[font=\tiny,text=ink] at (0.802,1.98){$10$};
+\node[font=\large,text=wRahim] at (0.356,1.18){\arab م};
+\node[font=\small,text=white] at (0.356,0.45){$40$};
+\draw[ink,line width=0.6pt] (0,0)--(14.000,0);
+\draw[ink,line width=0.6pt] (14.000,0)--(14.000,-0.16);
+\node[font=\scriptsize,text=ink] at (14.000,-0.32){$0$};
+\draw[ink,line width=0.3pt] (13.964,0)--(13.964,-0.08);
+\draw[ink,line width=0.3pt] (12.896,0)--(12.896,-0.08);
+\draw[ink,line width=0.6pt] (12.183,0)--(12.183,-0.16);
+\node[font=\scriptsize,text=ink] at (12.183,-0.32){$102$};
+\draw[ink,line width=0.3pt] (12.165,0)--(12.165,-0.08);
+\draw[ink,line width=0.3pt] (11.631,0)--(11.631,-0.08);
+\draw[ink,line width=0.3pt] (11.097,0)--(11.097,-0.08);
+\draw[ink,line width=0.6pt] (11.008,0)--(11.008,-0.16);
+\node[font=\scriptsize,text=ink] at (11.008,-0.32){$168$};
+\draw[ink,line width=0.3pt] (10.990,0)--(10.990,-0.08);
+\draw[ink,line width=0.3pt] (10.455,0)--(10.455,-0.08);
+\draw[ink,line width=0.3pt] (6.893,0)--(6.893,-0.08);
+\draw[ink,line width=0.3pt] (6.751,0)--(6.751,-0.08);
+\draw[ink,line width=0.3pt] (6.038,0)--(6.038,-0.08);
+\draw[ink,line width=0.6pt] (5.148,0)--(5.148,-0.16);
+\node[font=\scriptsize,text=ink] at (5.148,-0.32){$497$};
+\draw[ink,line width=0.3pt] (5.130,0)--(5.130,-0.08);
+\draw[ink,line width=0.3pt] (4.595,0)--(4.595,-0.08);
+\draw[ink,line width=0.3pt] (1.033,0)--(1.033,-0.08);
+\draw[ink,line width=0.3pt] (0.891,0)--(0.891,-0.08);
+\draw[ink,line width=0.3pt] (0.712,0)--(0.712,-0.08);
+\draw[ink,line width=0.6pt] (0.000,0)--(0.000,-0.16);
+\node[font=\scriptsize,text=ink] at (0.000,-0.32){$786$};
+\node[font=\large,text=wRahim,anchor=south] at (0.0,1.97){$786$};
+\node[font=\scriptsize,text=wRahim,anchor=north] at (0.0,1.97){$=2\cdot3\cdot131$, charge $0$};
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},ink,line width=0.6pt] (14.000,-0.46)--(12.183,-0.46);
+\node[font=\normalsize,text=wBism] at (13.092,-0.86){\arab بسم};
+\node[font=\scriptsize,text=ink] at (13.092,-1.12){bi-smi};
+\node[font=\scriptsize,text=ink!70] at (13.092,-1.34){$102$, charge $0$};
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},ink,line width=0.6pt] (12.183,-0.46)--(11.008,-0.46);
+\node[font=\normalsize,text=wAllah] at (11.595,-0.86){\arab الله};
+\node[font=\scriptsize,text=ink] at (11.595,-1.12){All\=ah};
+\node[font=\scriptsize,text=ink!70] at (11.595,-1.34){$66$, charge $0$};
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},ink,line width=0.6pt] (11.008,-0.46)--(5.148,-0.46);
+\node[font=\normalsize,text=wRahman] at (8.078,-0.86){\arab الرحمن};
+\node[font=\scriptsize,text=ink] at (8.078,-1.12){ar-Ra\d{h}m\=an};
+\node[font=\scriptsize,text=ink!70] at (8.078,-1.34){$329$, charge $-1$};
+\draw[decorate,decoration={brace,amplitude=4pt,mirror},ink,line width=0.6pt] (5.148,-0.46)--(0.000,-0.46);
+\node[font=\normalsize,text=wRahim] at (2.574,-0.86){\arab الرحيم};
+\node[font=\scriptsize,text=ink] at (2.574,-1.12){ar-Ra\d{h}\=im};
+\node[font=\scriptsize,text=ink!70] at (2.574,-1.34){$289$, charge $+1$};
+\node[ink!70,font=\scriptsize,anchor=west,align=left] at (0,-1.80){Le tracé thuluth n'est pas superposable à son nombre (projection à sens unique) ; cette figure l'est, par construction.\\ Échelle : 1 unité abjad $=0.0178$\,cm. 19 segments ; somme des largeurs $=786$.};
+\end{tikzpicture}

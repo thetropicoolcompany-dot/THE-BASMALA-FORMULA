@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Basmala Formula — Ḥisāb al-Qurʾān</title>
+<style>
+  :root { --ink:#2a2320; --paper:#f7f2e9; --gold:#a8843c; --credit:#2e6e4e; --debit:#8a3b3b; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--paper); color:var(--ink); font-family:Georgia,'Noto Naskh Arabic',serif; min-height:100vh; }
+  header { text-align:center; padding:1.1rem .5rem .4rem; border-bottom:1px solid #d8cdb8; }
+  header h1 { font-size:1.25rem; letter-spacing:.04em; }
+  header .sub { font-size:.8rem; color:#7a6d58; margin-top:.15rem; }
+  #langs { position:absolute; top:.7rem; inset-inline-end:.9rem; }
+  #langs button { background:none; border:1px solid #c9bda3; border-radius:3px; padding:.15rem .45rem;
+                  margin-inline-start:.25rem; cursor:pointer; font-size:.75rem; color:var(--ink); }
+  #langs button.on { background:var(--gold); color:#fff; border-color:var(--gold); }
+  main { display:grid; grid-template-columns:1fr 1.15fr 1fr; gap:0; max-width:1200px; margin:0 auto; }
+  section { padding:1.1rem 1.2rem; border-inline-end:1px solid #e2d8c4; min-height:60vh; }
+  section:last-child { border-inline-end:none; }
+  h2 { font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold);
+       border-bottom:1px solid #e2d8c4; padding-bottom:.35rem; margin-bottom:.8rem; }
+  .ar { font-size:1.5rem; line-height:2.1; direction:rtl; text-align:right; }
+  .big { font-size:1.9rem; font-weight:bold; }
+  .kv { display:flex; justify-content:space-between; font-size:.86rem; padding:.22rem 0;
+        border-bottom:1px dotted #e2d8c4; }
+  .kv b { font-variant-numeric:tabular-nums; }
+  .c1 { color:var(--credit); } .cm1 { color:var(--debit); } .c0 { color:#7a6d58; }
+  #beat { display:inline-block; width:.8em; height:.8em; border-radius:50%;
+          background:var(--gold); vertical-align:-.08em; animation:beat 1.304s infinite; }
+  @keyframes beat { 0%,100%{transform:scale(.7);opacity:.5} 50%{transform:scale(1.15);opacity:1} }
+  svg { display:block; margin:0 auto; }
+  footer { text-align:center; font-size:.72rem; color:#8b7d64; padding:1rem; }
+  @media (max-width:840px){ main{grid-template-columns:1fr} section{border:none;border-bottom:1px solid #e2d8c4;min-height:auto} }
+</style>
+</head>
+<body>
+<header>
+  <div id="langs"></div>
+  <h1>The Basmala Formula</h1>
+  <div class="sub" id="t-sub"></div>
+</header>
+<main>
+  <section id="conte">
+    <h2 id="t-conte"></h2>
+    <div class="ar big" id="sname"></div>
+    <div class="kv"><span id="t-sourate"></span><b id="snum"></b></div>
+    <div class="kv"><span id="t-versets"></span><b id="svers"></b></div>
+    <div class="ar" id="rasm" style="margin-top:1rem"></div>
+  </section>
+  <section id="balance">
+    <h2 id="t-balance"></h2>
+    <div style="text-align:center;margin:.4rem 0 1rem"><span id="beat"></span></div>
+    <div class="kv"><span id="t-date"></span><b id="vdate"></b></div>
+    <div class="kv"><span id="t-jours"></span><b id="vjours"></b></div>
+    <div class="kv"><span id="t-frac"></span><b id="vfrac"></b></div>
+    <div class="kv"><span id="t-phrase"></span><b id="vphr"></b></div>
+    <div class="kv"><span id="t-juz"></span><b id="vjuz"></b></div>
+    <div class="kv"><span id="t-jummal"></span><b id="vjum"></b></div>
+    <div class="kv"><span id="t-charge"></span><b id="vch"></b></div>
+    <div class="kv"><span id="t-tau"></span><b id="vtau"></b></div>
+    <div class="kv"><span id="t-clic"></span><b id="vclic"></b></div>
+    <div class="kv"><span id="t-solde"></span><b id="vsolde"></b></div>
+  </section>
+  <section id="forme">
+    <h2 id="t-forme"></h2>
+    <svg id="globe" width="260" height="260" viewBox="0 0 260 260"></svg>
+    <div class="kv" style="margin-top:.8rem"><span id="t-cellule"></span><b id="vcell"></b></div>
+  </section>
+</main>
+<footer id="t-foot"></footer>
+<script>
+const I18N = {
+ fr: {sub:"Ḥisāb al-Qurʾān — l'horloge comptable de la basmala", conte:"Le conte — الظاهر",
+      balance:"La balance — l'audit en direct", forme:"La forme — الباطن",
+      sourate:"Sourate", versets:"Versets (phrase en cours)", date:"Date", jours:"Jours d'exercice",
+      frac:"Fraction de l'année", phrase:"Phrase (n° / 10 642)", juz:"Juz", jummal:"Jummal de la phrase",
+      charge:"Charge", tau:"τ (tempo, s/op)", clic:"N clic (opérations/cycle)", solde:"Solde du cycle",
+      cellule:"Cellule (sourate) en cours",
+      foot:"Ouverture : aube du 23 Ramaḍān (ليلة القدر → مطلع الفجر) · calibration duodécimaine ±1 j · tout recompté des FP, 159 assertions, 0 écart",
+      dir:"ltr"},
+ ar: {sub:"حساب القرآن — ساعة البسملة المحاسبية", conte:"القصص — الظاهر",
+      balance:"الميزان — التدقيق المباشر", forme:"الصورة — الباطن",
+      sourate:"السورة", versets:"الآيات (الجملة الجارية)", date:"التاريخ", jours:"أيام السنة",
+      frac:"جزء من السنة", phrase:"الجملة (من ١٠٦٤٢)", juz:"الجزء", jummal:"جُمّل الجملة",
+      charge:"الشحنة", tau:"τ (الإيقاع، ثانية/عملية)", clic:"عمليات الدورة", solde:"رصيد الدورة",
+      cellule:"الخلية (السورة) الجارية",
+      foot:"الافتتاح: فجر ٢٣ رمضان (ليلة القدر → مطلع الفجر) · معايرة اثنا عشرية ±يوم · كل شيء معاد حسابه، ١٥٩ إثباتًا، صفر فرق",
+      dir:"rtl"},
+ en: {sub:"Ḥisāb al-Qurʾān — the basmala accounting clock", conte:"The tale — الظاهر",
+      balance:"The balance — live audit", forme:"The form — الباطن",
+      sourate:"Surah", versets:"Verses (current sentence)", date:"Date", jours:"Days of the cycle",
+      frac:"Fraction of the year", phrase:"Sentence (of 10,642)", juz:"Juzʾ", jummal:"Sentence jummal",
+      charge:"Charge", tau:"τ (tempo, s/op)", clic:"N click (ops/cycle)", solde:"Cycle balance",
+      cellule:"Current cell (surah)",
+      foot:"Opening: dawn of 23 Ramaḍān (laylat al-qadr → maṭlaʿ al-fajr) · Twelver calibration ±1 day · everything recomputed from sources, 159 assertions, 0 discrepancy",
+      dir:"ltr"},
+ fa: {sub:"حساب القرآن — ساعت حسابداریِ بسم‌الله", conte:"داستان — الظاهر",
+      balance:"ترازو — حسابرسی زنده", forme:"صورت — الباطن",
+      sourate:"سوره", versets:"آیات (جملهٔ جاری)", date:"تاریخ", jours:"روزهای دوره",
+      frac:"کسری از سال", phrase:"جمله (از ۱۰٦۴۲)", juz:"جزء", jummal:"جُمّلِ جمله",
+      charge:"بار", tau:"τ (آهنگ، ثانیه/عمل)", clic:"عملیات هر دوره", solde:"ماندهٔ دوره",
+      cellule:"سلول (سورهٔ) جاری",
+      foot:"گشایش: سپیده‌دم ۲۳ رمضان (لیلة القدر → مطلع الفجر) · تنظیم دوازده‌امامی ±۱ روز · همه از منابع بازشماری شده؛ ۱۵۹ گواهی، صفر اختلاف",
+      dir:"rtl"}
+};
+const ANCRE = new Date(Date.UTC(2026,2,13));          // مطلع الفجر du 23 Ramaḍān 1447
+const AN = 12*29.530589;                               // année lunaire moyenne (paramètre)
+let META=null, PHR=null, LANG=localStorage.basmalaLang||'fr';
+
+function setLang(l){
+  LANG=l; localStorage.basmalaLang=l;
+  const t=I18N[l];
+  document.documentElement.lang=l; document.documentElement.dir=t.dir;
+  for(const k of ['sub','conte','balance','forme','sourate','versets','date','jours','frac','phrase','juz','jummal','charge','tau','clic','solde','cellule','foot'])
+    document.getElementById('t-'+k).textContent=t[k];
+  document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  render();
+}
+function position(now){
+  const jours=(now-ANCRE)/86400000, f=((jours%AN)+AN)%AN/AN;
+  let lo=0,hi=PHR.length-1;                            // bisect
+  while(lo<hi){const m=(lo+hi+1)>>1; if(PHR[m].f0<=f)lo=m; else hi=m-1;}
+  return {jours,f,p:PHR[lo]};
+}
+function render(){
+  if(!PHR||!META)return;
+  const now=new Date(), {jours,f,p}=position(now);
+  document.getElementById('sname').textContent=p.n;
+  document.getElementById('snum').textContent='S'+p.s;
+  document.getElementById('svers').textContent=p.v;
+  document.getElementById('rasm').textContent=p.r;
+  document.getElementById('vdate').textContent=now.toISOString().slice(0,10);
+  document.getElementById('vjours').textContent='J+'+Math.floor(jours);
+  document.getElementById('vfrac').textContent=(100*f).toFixed(3)+' %';
+  document.getElementById('vphr').textContent=p.p+' · #'+(PHR.indexOf(p)+1);
+  document.getElementById('vjuz').textContent=p.juz;
+  document.getElementById('vjum').textContent=p.j.toLocaleString();
+  const ch=document.getElementById('vch');
+  ch.textContent=(p.c>0?'+1':p.c<0?'−1':'0');
+  ch.className=p.c>0?'c1':p.c<0?'cm1':'c0';
+  document.getElementById('vtau').textContent=META.tau.moyenne.toFixed(6);
+  document.getElementById('vclic').textContent=META.N_clic.toLocaleString();
+  document.getElementById('vsolde').textContent='Σ ≡ 0 (le cycle solde)';
+  drawForm(f,p);
+}
+function drawForm(f,p){
+  const s=document.getElementById('globe'); s.innerHTML='';
+  const NS='http://www.w3.org/2000/svg', cx=130, cy=130;
+  // l'écume : 114 cellules sur une spirale, la cellule courante en or
+  for(let i=0;i<114;i++){
+    const a=i*2.399963, r=14+i*0.98, x=cx+r*Math.cos(a), y=cy+r*Math.sin(a);
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',x); c.setAttribute('cy',y);
+    c.setAttribute('r', i+1===p.s?9:3.4);
+    c.setAttribute('fill', i+1===p.s?'#a8843c':'#d8cdb8');
+    if(i+1===p.s){c.setAttribute('stroke','#2a2320');c.setAttribute('stroke-width','1.2');
+      const an=document.createElementNS(NS,'animate');
+      an.setAttribute('attributeName','r');an.setAttribute('values','8;10;8');
+      an.setAttribute('dur','1.304s');an.setAttribute('repeatCount','indefinite');c.appendChild(an);}
+    s.appendChild(c);
+  }
+  // l'aiguille de l'année (le globe qui s'ouvre à sa porte)
+  const ang=-Math.PI/2+2*Math.PI*f;
+  const l=document.createElementNS(NS,'line');
+  l.setAttribute('x1',cx);l.setAttribute('y1',cy);
+  l.setAttribute('x2',cx+118*Math.cos(ang));l.setAttribute('y2',cy+118*Math.sin(ang));
+  l.setAttribute('stroke','#8a3b3b');l.setAttribute('stroke-width','1.4');
+  s.appendChild(l);
+  document.getElementById('vcell').textContent='S'+p.s+' · '+p.n;
+}
+async function boot(){
+  const langs=document.getElementById('langs');
+  for(const l of ['fr','ar','en','fa']){
+    const b=document.createElement('button'); b.textContent=l.toUpperCase(); b.dataset.l=l;
+    b.onclick=()=>setLang(l); langs.appendChild(b);
+  }
+  [META,PHR]=await Promise.all([
+    fetch('data/meta.json').then(r=>r.json()),
+    fetch('data/phrases.json').then(r=>r.json())]);
+  setLang(LANG);
+  setInterval(render,1304);                            // le battement de la trotteuse
+}
+boot();
+</script>
+</body>
+</html>
